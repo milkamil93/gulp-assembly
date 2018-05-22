@@ -56,7 +56,8 @@ const paths = {
         vendor: {
             fonts: {
                 src: [
-                    './bower_components/open-sans-fontface/fonts/*/*.*'
+                    './bower_components/open-sans-fontface/fonts/**/*{ttf,woff,woff2,svg,eot}',
+                    './bower_components/open-sans-fontface/fonts/*{ttf,woff,woff2,svg,eot}'
                 ],
                 dest: './app/assets/css/fonts'
             },
@@ -82,7 +83,7 @@ const paths = {
     },
     img: {
         src: [
-            './app/assets/images/*/*.*',
+            './app/assets/images/**/*.*',
             './app/assets/images/*.*'
         ],
         dest: './dist/assets/images'
@@ -93,8 +94,8 @@ const paths = {
             dest: './dist'
         },
         fonts: {
-            src: './app/assets/css/fonts/*.*',
-            dest: './dist/assets/css/fonts'
+            src: './app/assets/fonts/*.*',
+            dest: './dist/assets/fonts'
         },
         css: {
             src: './app/assets/css/*.min.css',
@@ -112,12 +113,15 @@ const paths = {
     },
     fonts: {
         src: [
-            './app/materials/fonts/*.*',
-            './app/materials/fonts/*/*.*'
+            './app/materials/fonts/**/*{ttf,woff,woff2,svg,eot}',
+            './app/materials/fonts/*{ttf,woff,woff2,svg,eot}'
         ],
-        dest: './app/assets/images'
+        css: [
+            './app/materials/fonts/**/*.css',
+            './app/materials/fonts/*.css'
+        ]
     }
-}
+};
 
 // Подключение Browsersync
 const browserSync = require('browser-sync').create(),
@@ -180,11 +184,11 @@ function jsCommon() {
 
 // Для объединения и минификации CSS-файлов внешних библиотек
 function cssVendor() {
-    return gulp.src(paths.app.vendor.css.src)
+    const css = paths.fonts.css.concat(paths.app.vendor.css.src);
+    return gulp.src(css)
         .pipe(sourcemaps.init())
         .pipe(concat('vendor.min.css'))
-        .pipe(postcss([autoprefixer({browsers:['last 4 version']})]))
-        .pipe(cssnano())
+        .pipe(cssnano({discardUnused: {fontFace: false}}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.app.vendor.css.dest));
 }
@@ -195,6 +199,20 @@ function jsVendor() {
         .pipe(concat('vendor.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(paths.app.vendor.js.dest));
+}
+
+// Для формирования спрайта svg
+function spritesSvg() {
+    return gulp.src(paths.svg.src)
+        .pipe(svgSprite({
+            mode: 'symbols',
+            preview: false,
+            selector: 'icon-%f',
+            svg: {
+                symbols: 'sprite.svg'
+            }
+        }))
+        .pipe(gulp.dest(paths.svg.dest));
 }
 
 // Для предварительной очистки (удаления) production-папки
@@ -217,34 +235,27 @@ function dist() {
         .pipe(gulp.dest(paths.dist.css.dest));
     var jsDist = gulp.src(paths.dist.js.src)
         .pipe(gulp.dest(paths.dist.js.dest));
-    return htmlDist, cssDist, jsDist;
-}
-
-// Для формирования спрайта svg
-function spritesSvg() {
-    return gulp.src(paths.svg.src)
-        .pipe(svgSprite({
-            mode: 'symbols',
-            preview: false,
-            selector: 'icon-%f',
-            svg: {
-                symbols: 'sprite.svg'
-            }
-        }))
-        .pipe(gulp.dest(paths.svg.dest));
-}
-
-const functions = ['html','cssCommon','jsCommon','cssVendor','jsVendor','nib','spritesSvg','serve','clean','img','dist'];
-for (var i = 0; i < functions.length; ++i) {
-    exports[functions[i]] = eval(functions[i]);
+    var fontsDist = gulp.src(paths.dist.fonts.src)
+        .pipe(gulp.dest(paths.dist.fonts.dest));
+    return htmlDist, cssDist, jsDist, fontsDist;
 }
 
 // Таск для разработки
+exports.html = html;
+exports.cssCommon = cssCommon;
+exports.jsCommon = jsCommon;
+exports.cssVendor = cssVendor;
+exports.jsVendor = jsVendor;
+exports.spritesSvg = spritesSvg;
+exports.serve = serve;
 gulp.task('default', gulp.series(
     gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,nib,spritesSvg,serve)
 ));
 
 // Таск для production
+exports.clean = clean;
+exports.img = img;
+exports.dist = dist;
 gulp.task('public', gulp.series(
     gulp.parallel(clean,img,dist)
 ));
