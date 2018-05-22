@@ -125,7 +125,7 @@ npm install -D gulpjs/gulp#4.0
 В проекте используются различные плагины для работы препроцессоров Pug и Stylus, минификации файлов, обработки изображений, а также вспомогательные плагины. Описание плагинов можно посмотреть в файле gulpfile.js.
 
 ```
-npm install -D browser-sync gulp-concat del gulp-imagemin gulp-plumber imagemin-pngquant gulp-pug gulp-rename gulp-stylus gulp-sourcemaps gulp-uglify gulp-svg-sprites nib rupture gulp-postcss gulp-cssnano autoprefixer pug
+npm install -D browser-sync gulp-concat del gulp-imagemin gulp-plumber imagemin-pngquant gulp-pug gulp-rename gulp-stylus gulp-sourcemaps gulp-uglify gulp-svg-sprites nib rupture gulp-postcss gulp-cssnano autoprefixer pug browserslist
 ```
 
 ### Инициализация Bower в проекте
