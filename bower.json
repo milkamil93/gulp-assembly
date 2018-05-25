@@ -1,0 +1,25 @@
+{
+  "name": "konditer",
+  "description": "",
+  "main": "gulpfile.js",
+  "authors": [
+    "milkamil93"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "^3.3.1",
+    "normalize.css": "^8.0.0",
+    "bootstrap": "^4.1.1",
+    "open-sans-fontface": "^1.4.2",
+    "fancybox": "^3.3.5",
+    "owl.carousel": "owl-carousel2#^2.3.4"
+  }
+}
