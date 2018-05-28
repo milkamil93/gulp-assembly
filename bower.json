@@ -1,5 +1,5 @@
 {
-  "name": "konditer",
+  "name": "",
   "description": "",
   "main": "gulpfile.js",
   "authors": [
@@ -20,6 +20,7 @@
     "bootstrap": "^4.1.1",
     "open-sans-fontface": "^1.4.2",
     "fancybox": "^3.3.5",
-    "owl.carousel": "owl-carousel2#^2.3.4"
+    "owl.carousel": "owl-carousel2#^2.3.4",
+    "svg4everybody": "^2.1.9"
   }
 }
