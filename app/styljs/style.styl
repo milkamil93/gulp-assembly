@@ -1,3 +1,32 @@
+flex-version = flex
+support-for-ie = false
+vendor-prefixes = official
+@import 'nib'
+
+rem() {
+  remified = ()
+  for arg in arguments {
+    push(remified, unit(arg/16, 'rem'))
+  }
+  return remified
+}
+
+// Breakpoints
+xs = 481px // 481...767px
+sm = 768px // 768...991px
+md = 992px // 992...1199px
+lg = 1200px // 1200...1599px
+xl = 1600px // >1600px
+
+fontvag = 'VAG World', sans-serif
+fontbase = 'Open Sans', sans-serif
+
+html
+  font-size 16px
+
+body
+  font-family fontbase
+
 +above(lg)
   .container
     max-width 1200px
