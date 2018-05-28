@@ -1,7 +1,7 @@
 mixin svg(id,cls)
     -var cls = cls ? ' ' + cls : ''
     svg(class="icon icon-" + id + cls)
-        use(xlink:href="assets/images/sprite.svg#icon-" + id)
+        use(xlink:href="assets/images/sprite.svg#" + id)
 head
     meta(http-equiv='content-type' content='text/html' charset='UTF-8')
     meta(http-equiv='X-UA-Compatible' content='IE=edge')

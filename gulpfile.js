@@ -12,7 +12,7 @@ const gulp = require('gulp'), // Gulp
     stylus = require('gulp-stylus'), // Stylus
     sourcemaps = require('gulp-sourcemaps'), // Карта css
     uglify = require('gulp-uglify'), // Минификация JS-файлов
-    svgSprite = require('gulp-svg-sprites'), // Склеивание svg в один
+    svgSprite = require('gulp-svg-sprite'), // Склеивание svg в один
     nib = require('nib'),
     rupture = require('rupture'),
     postcss = require('gulp-postcss'),
@@ -205,11 +205,11 @@ function jsVendor() {
 function spritesSvg() {
     return gulp.src(paths.svg.src)
         .pipe(svgSprite({
-            mode: 'symbols',
-            preview: false,
-            selector: 'icon-%f',
-            svg: {
-                symbols: 'sprite.svg'
+            mode: {
+                inline: true,
+                symbol: {
+                    sprite: '../sprite.svg'
+                }
             }
         }))
         .pipe(gulp.dest(paths.svg.dest));
