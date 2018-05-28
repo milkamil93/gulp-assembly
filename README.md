@@ -134,7 +134,7 @@ bower init
 ```
 
 ### Установка библиотек
-По умолчанию используем `jQuery, Normalize.css, Bootstrap, Open Sans, FancyBox, OwlCarousel2.`
+По умолчанию используем `jQuery, svg4everybody, Normalize.css, Bootstrap, Open Sans, FancyBox, OwlCarousel2.`
 ```
 bower install -D jquery svg4everybody normalize.css bootstrap open-sans-fontface fancybox owl-carousel2
 ```
