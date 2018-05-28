@@ -27,11 +27,8 @@ const paths = {
     },
     watch: {
         pug: './app/pug/**/*.pug',
-        styl: [
-            './app/blocks/**/*.styl',
-            './app/config/**/*.styl'
-        ],
-        js: './app/blocks/**/*.js',
+        styl: './app/styljs/style.styl',
+        js: './app/styljs/script.js',
         svg: './app/materials/svg/*.svg'
     },
     app: {
@@ -41,15 +38,11 @@ const paths = {
         },
         common: {
             css: {
-                src: [
-                    './app/config/variables.styl',
-                    './app/config/mixins.styl',
-                    './app/blocks/**/*.styl'
-                ],
+                src: './app/styljs/style.styl',
                 dest: './app/assets/css'
             },
             js: {
-                src: './app/blocks/**/*.js',
+                src: './app/styljs/script.js',
                 dest: './app/assets/js'
             }
         },
