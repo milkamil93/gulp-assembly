@@ -68,6 +68,7 @@ const paths = {
                 src: [
                     './bower_components/jquery/dist/jquery.min.js',
                     './bower_components/svg4everybody/dist/svg4everybody.min.js',
+                    './bower_components/bootstrap/dist/js/bootstrap.min.js',
                     './bower_components/fancybox/dist/jquery.fancybox.js',
                     './bower_components/owl.carousel/dist/owl.carousel.min.js'
                 ],
@@ -126,7 +127,9 @@ function serve() {
     browserSync.init({
         server: './app'
     });
-    gulp.watch(paths.watch.pug, gulp.series('html'));
+    gulp.watch(paths.watch.pug).on('change', function ($file) {
+        html('./'+$file.replace(/\\/g,"/"));
+    });
     gulp.watch(paths.watch.styl, gulp.series('cssCommon'));
     gulp.watch(paths.watch.js, gulp.series('jsCommon'));
     gulp.watch(paths.watch.svg, gulp.series('spritesSvg'));
@@ -134,8 +137,9 @@ function serve() {
 }
 
 // Для работы Pug, преобразование Pug в HTML
-function html() {
-    return gulp.src(paths.app.html.src)
+function html($file) {
+    $file = (typeof($file) === 'function') ? paths.app.html.src : $file;
+    return gulp.src($file)
         .pipe(plumber())
         .pipe(pug({pretty: true}))
         .pipe(gulp.dest(paths.app.html.dest))
@@ -200,7 +204,7 @@ function spritesSvg() {
     return gulp.src(paths.svg.src)
         .pipe(svgSprite({
             mode: {
-                inline: true,
+                //inline: true,
                 symbol: {
                     sprite: '../sprite.svg'
                 }
