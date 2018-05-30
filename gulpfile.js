@@ -128,7 +128,12 @@ function serve() {
         server: './app'
     });
     gulp.watch(paths.watch.pug).on('change', function ($file) {
-        html('./'+$file.replace(/\\/g,"/"));
+        if (~$file.indexOf('layouts')) {
+            html();
+        } else {
+            html('./'+$file.replace(/\\/g,"/"));
+        }
+
     });
     gulp.watch(paths.watch.styl, gulp.series('cssCommon'));
     gulp.watch(paths.watch.js, gulp.series('jsCommon'));
@@ -138,7 +143,7 @@ function serve() {
 
 // Для работы Pug, преобразование Pug в HTML
 function html($file) {
-    $file = (typeof($file) === 'function') ? paths.app.html.src : $file;
+    $file = (typeof($file) === 'string') ? $file : paths.app.html.src;
     return gulp.src($file)
         .pipe(plumber())
         .pipe(pug({pretty: true}))
