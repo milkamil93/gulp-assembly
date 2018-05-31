@@ -1,7 +1,7 @@
 'use strict';
 
 // Подключение плагинов через переменные
-const gulp = require('gulp'), // Gulp
+var gulp = require('gulp'), // Gulp
     concat = require('gulp-concat'), // Объединение файлов
     del = require('del'), // Удаление папок и файлов
     imagemin = require('gulp-imagemin'), // Оптимизация изображений
@@ -20,7 +20,7 @@ const gulp = require('gulp'), // Gulp
     autoprefixer = require('autoprefixer'); // плагин postcss для сжатия для ДДобавление вендорных префиксов
 
 // Задание путей к используемым файлам и папкам
-const paths = {
+var paths = {
     dir: {
         app: './app',
         dist: './dist'
@@ -119,7 +119,7 @@ const paths = {
 };
 
 // Подключение Browsersync
-const browserSync = require('browser-sync').create(),
+var browserSync = require('browser-sync').create(),
     reload = browserSync.reload;
 
 // Для работы Browsersync, автообновление браузера
@@ -153,7 +153,7 @@ function html($file) {
 
 // Для объединения шрифтов
 function fonts() {
-    const fonts = paths.app.vendor.fonts.src.concat(paths.fonts.src);
+    var fonts = paths.app.vendor.fonts.src.concat(paths.fonts.src);
     return gulp.src(fonts)
         .pipe(gulp.dest(paths.app.vendor.fonts.dest));
 }
@@ -187,7 +187,7 @@ function jsCommon() {
 
 // Для объединения и минификации CSS-файлов внешних библиотек
 function cssVendor() {
-    const css = paths.fonts.css.concat(paths.app.vendor.css.src);
+    var css = paths.fonts.css.concat(paths.app.vendor.css.src);
     return gulp.src(css)
         .pipe(sourcemaps.init())
         .pipe(concat('vendor.min.css'))
@@ -252,7 +252,7 @@ exports.jsVendor = jsVendor;
 exports.spritesSvg = spritesSvg;
 exports.serve = serve;
 gulp.task('default', gulp.series(
-    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,nib,spritesSvg,serve)
+    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,serve)
 ));
 
 // Таск для production
