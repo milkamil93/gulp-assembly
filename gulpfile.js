@@ -89,8 +89,8 @@ var paths = {
             dest: './dist'
         },
         fonts: {
-            src: './app/assets/fonts/*.*',
-            dest: './dist/assets/fonts'
+            src: './app/assets/css/fonts/**/*.*',
+            dest: './dist/assets/css/fonts'
         },
         css: {
             src: './app/assets/css/*.min.css',
