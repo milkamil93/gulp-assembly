@@ -1,12 +1,14 @@
+mixin svg(id,cls)
+    -var cls = cls ? ' ' + cls : ''
+    svg(class="icon icon-" + id + cls)
+        use(xlink:href="assets/images/svg/sprite.svg#" + id)
+
 doctype html
 html(lang='ru')
-    mixin svg(id,cls)
-        -var cls = cls ? ' ' + cls : ''
-        svg(class="icon icon-" + id + cls)
-            use(xlink:href="assets/images/sprite.svg#" + id)
     head
-        meta(http-equiv='content-type' content='text/html' charset='UTF-8')
+        meta(charset='UTF-8')
         meta(http-equiv='X-UA-Compatible' content='IE=edge')
+        meta(name="author" content="Программирование и верстка: @milkamil93.")
         meta(name='viewport', content='width=device-width,initial-scale=1,shrink-to-fit=no,maximum-scale=1')
         title [*titl*]
         base(href='[(site_url)]')
@@ -22,13 +24,13 @@ html(lang='ru')
         link(rel='stylesheet' href='assets/css/common.min.css')
     body.body
         .site
-            header.site__header.s-header
+            header.site__header.header
                 h2 Header
 
-            .site__content.content
+            main.site__main.main
                 block site__content
 
-            footer.site__footer.s-footer
+            footer.site__footer.footer
                 h2 Footer
 
         script(src='assets/js/vendor.min.js')

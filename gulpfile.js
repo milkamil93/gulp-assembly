@@ -3,7 +3,6 @@
 // Подключение плагинов через переменные
 var gulp = require('gulp'), // Gulp
     concat = require('gulp-concat'), // Объединение файлов
-    del = require('del'), // Удаление папок и файлов
     imagemin = require('gulp-imagemin'), // Оптимизация изображений
     plumber = require('gulp-plumber'), // Обработка ошибок
     pngquant = require('imagemin-pngquant'), // Оптимизация PNG-изображений
@@ -13,6 +12,7 @@ var gulp = require('gulp'), // Gulp
     sourcemaps = require('gulp-sourcemaps'), // Карта css
     uglify = require('gulp-uglify'), // Минификация JS-файлов
     svgSprite = require('gulp-svg-sprite'), // Склеивание svg в один
+    cheerio = require('gulp-cheerio'),
     nib = require('nib'),
     rupture = require('rupture'),
     postcss = require('gulp-postcss'),
@@ -21,100 +21,63 @@ var gulp = require('gulp'), // Gulp
 
 // Задание путей к используемым файлам и папкам
 var paths = {
-    dir: {
-        app: './app',
-        dist: './dist'
-    },
     watch: {
         pug: './app/pug/**/*.pug',
-        styl: './app/styljs/style.styl',
-        js: './app/styljs/script.js',
-        svg: './app/materials/svg/*.svg'
-    },
-    app: {
-        html: {
-            src: './app/pug/pages/*.pug',
-            dest: './app'
-        },
-        common: {
-            css: {
-                src: './app/styljs/style.styl',
-                dest: './app/assets/css'
-            },
-            js: {
-                src: './app/styljs/script.js',
-                dest: './app/assets/js'
-            }
-        },
-        vendor: {
-            fonts: {
-                src: [
-                    './bower_components/open-sans-fontface/fonts/**/*{ttf,woff,woff2,svg,eot}',
-                    './bower_components/open-sans-fontface/fonts/*{ttf,woff,woff2,svg,eot}'
-                ],
-                dest: './app/assets/css/fonts'
-            },
-            css: {
-                src: [
-                    './bower_components/open-sans-fontface/open-sans.css',
-                    './bower_components/normalize.css/normalize.css',
-                    './bower_components/bootstrap/dist/css/bootstrap.min.css',
-                    './bower_components/fancybox/dist/jquery.fancybox.css',
-                    './bower_components/owl.carousel/dist/assets/owl.carousel.css'
-                ],
-                dest: './app/assets/css'
-            },
-            js: {
-                src: [
-                    './bower_components/jquery/dist/jquery.min.js',
-                    './bower_components/svg4everybody/dist/svg4everybody.min.js',
-                    './bower_components/bootstrap/dist/js/bootstrap.min.js',
-                    './bower_components/fancybox/dist/jquery.fancybox.js',
-                    './bower_components/owl.carousel/dist/owl.carousel.min.js'
-                ],
-                dest: './app/assets/js'
-            }
-        }
-    },
-    img: {
-        src: [
-            './app/assets/images/**/*.*',
-            './app/assets/images/*.*'
-        ],
-        dest: './dist/assets/images'
+        styl: './app/styljs/common.styl',
+        js: './app/styljs/common.js',
+        svg: './app/materials/svg/*.svg',
+        img: [
+            './app/materials/images/**/*',
+            './app/materials/images/*'
+        ]
     },
     dist: {
-        html: {
-            src: './app/*.html',
-            dest: './dist'
+        html: './dist',
+        css: './dist/assets/css',
+        js: './dist/assets/js',
+        fonts: './dist/assets/css/fonts',
+        img: './dist/assets/images',
+        svg: './dist/assets/images/svg'
+    },
+    app: {
+        common: {
+            html: './app/pug/pages/*.pug',
+            styl: './app/styljs/common.styl',
+            js: './app/styljs/common.js',
+            css: [
+                './app/materials/fonts/**/*.css',
+                './app/materials/fonts/*.css'
+            ],
+            fonts: [
+                './app/materials/fonts/**/*.{ttf,woff,woff2,svg,eot}',
+                './app/materials/fonts/*.{ttf,woff,woff2,svg,eot}'
+            ],
+            img: [
+                './app/materials/images/**/*.{jpg,jpeg,png}',
+                './app/materials/images/*.{jpg,jpeg,png}'
+            ],
+            svg: './app/materials/svg/*.svg'
         },
-        fonts: {
-            src: './app/assets/css/fonts/**/*.*',
-            dest: './dist/assets/css/fonts'
-        },
-        css: {
-            src: './app/assets/css/*.min.css',
-            map: './app/assets/css/',
-            dest: './dist/assets/css'
-        },
-        js: {
-            src: './app/assets/js/*.min.js',
-            dest: './dist/assets/js'
+        vendor: {
+            fonts: [
+                './bower_components/open-sans-fontface/fonts/**/*.{ttf,woff,woff2,svg,eot}'
+            ],
+            css: [
+                './bower_components/open-sans-fontface/open-sans.css',
+
+                './bower_components/normalize.css/normalize.css',
+                './bower_components/bootstrap/dist/css/bootstrap.min.css',
+                './bower_components/fancybox/dist/jquery.fancybox.css',
+                './bower_components/owl.carousel/dist/assets/owl.carousel.css'
+            ],
+            js: [
+                './bower_components/jquery/dist/jquery.min.js',
+                './bower_components/svg4everybody/dist/svg4everybody.min.js',
+                './bower_components/bootstrap/dist/js/bootstrap.min.js',
+                './bower_components/fancybox/dist/jquery.fancybox.js',
+                './bower_components/owl.carousel/dist/owl.carousel.min.js'
+            ]
         }
-    },
-    svg: {
-        src: './app/materials/svg/*.svg',
-        dest: './app/assets/images'
-    },
-    fonts: {
-        src: [
-            './app/materials/fonts/**/*{ttf,woff,woff2,svg,eot}',
-            './app/materials/fonts/*{ttf,woff,woff2,svg,eot}'
-        ],
-        css: [
-            './app/materials/fonts/**/*.css',
-            './app/materials/fonts/*.css'
-        ]
     }
 };
 
@@ -123,9 +86,9 @@ var browserSync = require('browser-sync').create(),
     reload = browserSync.reload;
 
 // Для работы Browsersync, автообновление браузера
-function serve() {
+function server() {
     browserSync.init({
-        server: './app'
+        server: paths.dist.html
     });
     gulp.watch(paths.watch.pug).on('change', function ($file) {
         if (~$file.indexOf('layouts')) {
@@ -135,112 +98,105 @@ function serve() {
         }
 
     });
+    gulp.watch(paths.watch.img).on('all', function ($action,$file) {
+        img('./'+$file.replace(/\\/g,"/"));
+    });
     gulp.watch(paths.watch.styl, gulp.series('cssCommon'));
     gulp.watch(paths.watch.js, gulp.series('jsCommon'));
     gulp.watch(paths.watch.svg, gulp.series('spritesSvg'));
-    gulp.watch('*.html').on('change', reload);
+    gulp.watch(paths.dist.html+'/*.html').on('change', reload);
 }
 
 // Для работы Pug, преобразование Pug в HTML
 function html($file) {
-    $file = (typeof($file) === 'string') ? $file : paths.app.html.src;
+    $file = (typeof($file) === 'string') ? $file : paths.app.common.html;
     return gulp.src($file)
         .pipe(plumber())
         .pipe(pug({pretty: true}))
-        .pipe(gulp.dest(paths.app.html.dest))
+        .pipe(gulp.dest(paths.dist.html))
         .pipe(browserSync.stream());
 }
 
 // Для объединения шрифтов
 function fonts() {
-    var fonts = paths.app.vendor.fonts.src.concat(paths.fonts.src);
+    var fonts = paths.app.vendor.fonts.concat(paths.app.common.fonts);
     return gulp.src(fonts)
-        .pipe(gulp.dest(paths.app.vendor.fonts.dest));
+        .pipe(gulp.dest(paths.dist.fonts));
 }
 
 // Для преобразования Stylus-файлов в CSS
 function cssCommon() {
-    return gulp.src(paths.app.common.css.src)
+    return gulp.src(paths.app.common.styl)
         .pipe(sourcemaps.init())
         .pipe(plumber())
-        .pipe(concat('common.styl'))
         .pipe(stylus({use:[nib(),rupture()]}))
         .pipe(postcss([autoprefixer({browsers:['last 4 version']})]))
-        .pipe(cssnano())
+        .pipe(cssnano({discardUnused: {fontFace: false}}))
         .pipe(rename({suffix:'.min'}))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.app.common.css.dest))
+        .pipe(gulp.dest(paths.dist.css))
         .pipe(browserSync.stream());
 }
 
 // Для объединения и минификации пользовательских JS-файлов
 function jsCommon() {
-    return gulp.src(paths.app.common.js.src)
+    return gulp.src(paths.app.common.js)
         .pipe(plumber())
-        .pipe(concat('common.js'))
-        .pipe(gulp.dest(paths.app.common.js.dest))
-        .pipe(rename({suffix: '.min'}))
         .pipe(uglify())
-        .pipe(gulp.dest(paths.app.common.js.dest))
+        .pipe(rename({suffix:'.min'}))
+        .pipe(gulp.dest(paths.dist.js))
         .pipe(browserSync.stream());
 }
 
 // Для объединения и минификации CSS-файлов внешних библиотек
 function cssVendor() {
-    var css = paths.fonts.css.concat(paths.app.vendor.css.src);
-    return gulp.src(css)
+    return gulp.src(paths.app.vendor.css)
         .pipe(sourcemaps.init())
         .pipe(concat('vendor.min.css'))
         .pipe(cssnano({discardUnused: {fontFace: false}}))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.app.vendor.css.dest));
+        .pipe(gulp.dest(paths.dist.css));
 }
 
 // Для объединения и минификации JS-файлов внешних библиотек
 function jsVendor() {
-    return gulp.src(paths.app.vendor.js.src)
+    return gulp.src(paths.app.vendor.js)
         .pipe(concat('vendor.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest(paths.app.vendor.js.dest));
+        .pipe(gulp.dest(paths.dist.js));
 }
 
 // Для формирования спрайта svg
 function spritesSvg() {
-    return gulp.src(paths.svg.src)
+    return gulp.src(paths.app.common.svg)
+        .pipe(cheerio({
+            run: function ($) {
+                $('[fill]').removeAttr('fill');
+                $('[style]').removeAttr('style');
+                $('[stroke]').removeAttr('stroke');
+            },
+            parserOptions: { xmlMode: true }
+        }))
         .pipe(svgSprite({
             mode: {
-                //inline: true,
+                inline: true,
                 symbol: {
                     sprite: '../sprite.svg'
                 }
+            },
+            run: function ($) {
+                console.log($);
             }
         }))
-        .pipe(gulp.dest(paths.svg.dest));
-}
-
-// Для предварительной очистки (удаления) production-папки
-function clean() {
-    return del(paths.dir.dist);
+        .pipe(gulp.dest(paths.dist.svg));
 }
 
 // Для обработки изображений
-function img() {
-    return gulp.src(paths.img.src)
+function img($image) {
+    var $images = (typeof($image) === 'string') ? $image : paths.app.common.img;
+    return gulp.src($images)
         .pipe(imagemin({use: [pngquant()]}))
-        .pipe(gulp.dest(paths.img.dest));
-}
-
-// Для формирования production-папки
-function dist() {
-    var htmlDist = gulp.src(paths.dist.html.src)
-        .pipe(gulp.dest(paths.dist.html.dest));
-    var cssDist = gulp.src(paths.dist.css.src)
-        .pipe(gulp.dest(paths.dist.css.dest));
-    var jsDist = gulp.src(paths.dist.js.src)
-        .pipe(gulp.dest(paths.dist.js.dest));
-    var fontsDist = gulp.src(paths.dist.fonts.src)
-        .pipe(gulp.dest(paths.dist.fonts.dest));
-    return htmlDist, cssDist, jsDist, fontsDist;
+        .pipe(gulp.dest(paths.dist.img));
 }
 
 // Таск для разработки
@@ -250,15 +206,8 @@ exports.jsCommon = jsCommon;
 exports.cssVendor = cssVendor;
 exports.jsVendor = jsVendor;
 exports.spritesSvg = spritesSvg;
-exports.serve = serve;
-gulp.task('default', gulp.series(
-    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,serve)
-));
-
-// Таск для production
-exports.clean = clean;
 exports.img = img;
-exports.dist = dist;
-gulp.task('public', gulp.series(
-    gulp.parallel(clean,img,dist)
+exports.server = server;
+gulp.task('default', gulp.series(
+    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,img,server)
 ));

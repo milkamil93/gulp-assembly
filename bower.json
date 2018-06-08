@@ -1,12 +1,6 @@
 {
-  "name": "",
-  "description": "",
   "main": "gulpfile.js",
-  "authors": [
-    "milkamil93"
-  ],
   "license": "ISC",
-  "homepage": "",
   "ignore": [
     "**/.*",
     "node_modules",
