@@ -21,6 +21,7 @@ var gulp = require('gulp'), // Gulp
 
 // Задание путей к используемым файлам и папкам
 var paths = {
+    cmsTpl: 'catalog/view/theme/komplekstehsnab',
     watch: {
         pug: './app/pug/**/*.pug',
         styl: './app/styljs/common.styl',
@@ -33,11 +34,11 @@ var paths = {
     },
     dist: {
         html: './dist',
-        css: './dist/assets/css',
-        js: './dist/assets/js',
-        fonts: './dist/assets/css/fonts',
-        img: './dist/assets/images',
-        svg: './dist/assets/images/svg'
+        css: './dist/' +this.cmsTpl+ '/stylesheet',
+        fonts: './dist/' +this.cmsTpl+ '/stylesheet/fonts',
+        js: './dist/' +this.cmsTpl+ '/js',
+        img: './dist/' +this.cmsTpl+ '/images',
+        svg: './dist/' +this.cmsTpl+ '/images/svg'
     },
     app: {
         common: {
@@ -68,14 +69,14 @@ var paths = {
                 './bower_components/normalize.css/normalize.css',
                 './bower_components/bootstrap/dist/css/bootstrap.min.css',
                 './bower_components/fancybox/dist/jquery.fancybox.css',
-                './bower_components/owl.carousel/dist/assets/owl.carousel.css'
+                './bower_components/swiper/dist/css/swiper.min.css'
             ],
             js: [
                 './bower_components/jquery/dist/jquery.min.js',
                 './bower_components/svg4everybody/dist/svg4everybody.min.js',
                 './bower_components/bootstrap/dist/js/bootstrap.min.js',
                 './bower_components/fancybox/dist/jquery.fancybox.js',
-                './bower_components/owl.carousel/dist/owl.carousel.min.js'
+                './bower_components/swiper/dist/js/swiper.min.js'
             ]
         }
     }

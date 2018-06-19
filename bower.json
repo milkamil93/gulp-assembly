@@ -1,6 +1,12 @@
 {
+  "name": "name",
+  "description": "",
   "main": "gulpfile.js",
+  "authors": [
+    "milkamil93"
+  ],
   "license": "ISC",
+  "homepage": "",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -8,13 +14,13 @@
     "test",
     "tests"
   ],
-  "devDependencies": {
-    "jquery": "^3.3.1",
-    "normalize.css": "^8.0.0",
+  "dependencies": {
     "bootstrap": "^4.1.1",
+    "normalize.css": "^8.0.0",
+    "jquery": "^3.3.1",
     "open-sans-fontface": "^1.4.2",
+    "svg4everybody": "^2.1.9",
     "fancybox": "^3.3.5",
-    "owl.carousel": "owl-carousel2#^2.3.4",
-    "svg4everybody": "^2.1.9"
+    "swiper": "^4.3.3"
   }
 }
