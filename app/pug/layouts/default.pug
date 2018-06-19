@@ -1,7 +1,9 @@
+-var cmsTpl = 'catalog/view/theme/komplekstehsnab/'
+
 mixin svg(id,cls)
     -var cls = cls ? ' ' + cls : ''
     svg(class="icon icon-" + id + cls)
-        use(xlink:href="assets/images/svg/sprite.svg#" + id)
+        use(xlink:href=cmsTpl + "/images/svg/sprite.svg#" + id)
 
 doctype html
 html(lang='ru')
@@ -20,18 +22,19 @@ html(lang='ru')
         meta(property='og:url', content='[(site_url)][~[*id*]~]')
         meta(property='og:image', content='assets/images/logo.png')
         meta(name="theme-color" content="#fff")
-        link(rel='stylesheet' href='assets/css/vendor.min.css')
-        link(rel='stylesheet' href='assets/css/common.min.css')
-    body.body
-        .site
-            header.site__header.header
-                h2 Header
+        link(rel='stylesheet' href=cmsTpl + 'css/vendor.min.css')
+        link(rel='stylesheet' href=cmsTpl + 'css/common.min.css')
+    body
+        .block
+            .block__vh
+                header.block__header.header
+                    h2 Header
 
-            main.site__main.main
-                block site__content
+                main.block__main.main
+                    block site__content
 
-            footer.site__footer.footer
+            footer.block__footer.footer
                 h2 Footer
 
-        script(src='assets/js/vendor.min.js')
-        script(src='assets/js/common.min.js')
+        script(src=cmsTpl + 'js/vendor.min.js')
+        script(src=cmsTpl + 'js/common.min.js')

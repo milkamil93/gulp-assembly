@@ -20,67 +20,67 @@ var gulp = require('gulp'), // Gulp
     autoprefixer = require('autoprefixer'); // плагин postcss для сжатия для ДДобавление вендорных префиксов
 
 // Задание путей к используемым файлам и папкам
-var paths = {
-    cmsTpl: 'catalog/view/theme/komplekstehsnab',
-    watch: {
-        pug: './app/pug/**/*.pug',
-        styl: './app/styljs/common.styl',
-        js: './app/styljs/common.js',
-        svg: './app/materials/svg/*.svg',
-        img: [
-            './app/materials/images/**/*',
-            './app/materials/images/*'
-        ]
-    },
-    dist: {
-        html: './dist',
-        css: './dist/' +this.cmsTpl+ '/stylesheet',
-        fonts: './dist/' +this.cmsTpl+ '/stylesheet/fonts',
-        js: './dist/' +this.cmsTpl+ '/js',
-        img: './dist/' +this.cmsTpl+ '/images',
-        svg: './dist/' +this.cmsTpl+ '/images/svg'
-    },
-    app: {
-        common: {
-            html: './app/pug/pages/*.pug',
+var cmsTpl = 'catalog/view/theme/komplekstehsnab',
+    paths = {
+        watch: {
+            pug: './app/pug/**/*.pug',
             styl: './app/styljs/common.styl',
             js: './app/styljs/common.js',
-            css: [
-                './app/materials/fonts/**/*.css',
-                './app/materials/fonts/*.css'
-            ],
-            fonts: [
-                './app/materials/fonts/**/*.{ttf,woff,woff2,svg,eot}',
-                './app/materials/fonts/*.{ttf,woff,woff2,svg,eot}'
-            ],
+            svg: './app/materials/svg/*.svg',
             img: [
-                './app/materials/images/**/*.{jpg,jpeg,png}',
-                './app/materials/images/*.{jpg,jpeg,png}'
-            ],
-            svg: './app/materials/svg/*.svg'
-        },
-        vendor: {
-            fonts: [
-                './bower_components/open-sans-fontface/fonts/**/*.{ttf,woff,woff2,svg,eot}'
-            ],
-            css: [
-                './bower_components/open-sans-fontface/open-sans.css',
-
-                './bower_components/normalize.css/normalize.css',
-                './bower_components/bootstrap/dist/css/bootstrap.min.css',
-                './bower_components/fancybox/dist/jquery.fancybox.css',
-                './bower_components/swiper/dist/css/swiper.min.css'
-            ],
-            js: [
-                './bower_components/jquery/dist/jquery.min.js',
-                './bower_components/svg4everybody/dist/svg4everybody.min.js',
-                './bower_components/bootstrap/dist/js/bootstrap.min.js',
-                './bower_components/fancybox/dist/jquery.fancybox.js',
-                './bower_components/swiper/dist/js/swiper.min.js'
+                './app/materials/images/**/*',
+                './app/materials/images/*'
             ]
+        },
+        dist: {
+            html: './dist',
+            css: './dist/' +cmsTpl+ '/stylesheet',
+            fonts: './dist/' +cmsTpl+ '/stylesheet/fonts',
+            js: './dist/' +cmsTpl+ '/js',
+            img: './dist/' +cmsTpl+ '/images',
+            svg: './dist/' +cmsTpl+ '/images/svg'
+        },
+        app: {
+            common: {
+                html: './app/pug/pages/*.pug',
+                styl: './app/styljs/common.styl',
+                js: './app/styljs/common.js',
+                css: [
+                    './app/materials/fonts/**/*.css',
+                    './app/materials/fonts/*.css'
+                ],
+                fonts: [
+                    './app/materials/fonts/**/*.{ttf,woff,woff2,svg,eot}',
+                    './app/materials/fonts/*.{ttf,woff,woff2,svg,eot}'
+                ],
+                img: [
+                    './app/materials/images/**/*.{jpg,jpeg,png}',
+                    './app/materials/images/*.{jpg,jpeg,png}'
+                ],
+                svg: './app/materials/svg/*.svg'
+            },
+            vendor: {
+                fonts: [
+                    './bower_components/open-sans-fontface/fonts/**/*.{ttf,woff,woff2,svg,eot}'
+                ],
+                css: [
+                    './bower_components/open-sans-fontface/open-sans.css',
+
+                    './bower_components/normalize.css/normalize.css',
+                    './bower_components/bootstrap/dist/css/bootstrap.min.css',
+                    './bower_components/fancybox/dist/jquery.fancybox.css',
+                    './bower_components/swiper/dist/css/swiper.min.css'
+                ],
+                js: [
+                    './bower_components/jquery/dist/jquery.min.js',
+                    './bower_components/svg4everybody/dist/svg4everybody.min.js',
+                    './bower_components/bootstrap/dist/js/bootstrap.min.js',
+                    './bower_components/fancybox/dist/jquery.fancybox.js',
+                    './bower_components/swiper/dist/js/swiper.min.js'
+                ]
+            }
         }
-    }
-};
+    };
 
 // Подключение Browsersync
 var browserSync = require('browser-sync').create(),
