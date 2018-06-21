@@ -100,7 +100,7 @@ function server() {
 
     });
     gulp.watch(paths.watch.img).on('all', function ($action,$file) {
-        img('./'+$file.replace(/\\/g,"/"), true);
+        img('./'+$file.replace(/\\/g,"/"));
     });
     gulp.watch(paths.watch.styl, gulp.series('cssCommon'));
     gulp.watch(paths.watch.js, gulp.series('jsCommon'));
@@ -191,8 +191,8 @@ function spritesSvg() {
 }
 
 // Для обработки изображений
-function img($image, $watch) {
-    var $images = ($watch) ? $image : paths.app.common.img;
+function img($image) {
+    var $images = (typeof($image) === 'string') ? $image : paths.app.common.img;
     return gulp.src($images)
         .pipe(imagemin({use: [pngquant()]}))
         .pipe(gulp.dest(paths.dist.img));
