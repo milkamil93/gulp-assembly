@@ -172,6 +172,7 @@ function spritesSvg() {
     return gulp.src(paths.app.common.svg)
         .pipe(cheerio({
             run: function ($) {
+                $('style').remove();
                 $('[fill]').removeAttr('fill');
                 $('[style]').removeAttr('style');
                 $('[stroke]').removeAttr('stroke');
@@ -184,9 +185,6 @@ function spritesSvg() {
                 symbol: {
                     sprite: '../sprite.svg'
                 }
-            },
-            run: function ($) {
-                console.log($);
             }
         }))
         .pipe(gulp.dest(paths.dist.svg));
