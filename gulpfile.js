@@ -151,7 +151,7 @@ function jsCommon() {
 
 // Для объединения и минификации CSS-файлов внешних библиотек
 function cssVendor() {
-    return gulp.src(paths.app.vendor.css)
+    return gulp.src(paths.app.common.css.concat(paths.app.vendor.css))
         .pipe(sourcemaps.init())
         .pipe(concat('vendor.min.css'))
         .pipe(cssnano({discardUnused: {fontFace: false}}))
