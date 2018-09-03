@@ -6,7 +6,7 @@
     "milkamil93"
   ],
   "license": "ISC",
-  "homepage": "",
+  "homepage": "https://github.com/milkamil93/gulp-assembly",
   "ignore": [
     "**/.*",
     "node_modules",

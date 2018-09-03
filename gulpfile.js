@@ -1,7 +1,7 @@
 'use strict';
 
 // Подключение плагинов через переменные
-var gulp = require('gulp'), // Gulp
+const gulp = require('gulp'), // Gulp
     concat = require('gulp-concat'), // Объединение файлов
     imagemin = require('gulp-imagemin'), // Оптимизация изображений
     plumber = require('gulp-plumber'), // Обработка ошибок
@@ -11,6 +11,7 @@ var gulp = require('gulp'), // Gulp
     stylus = require('gulp-stylus'), // Stylus
     sourcemaps = require('gulp-sourcemaps'), // Карта css
     uglify = require('gulp-uglify'), // Минификация JS-файлов
+    babel = require('gulp-babel'), // Поддержка ES6
     svgSprite = require('gulp-svg-sprite'), // Склеивание svg в один
     cheerio = require('gulp-cheerio'),
     nib = require('nib'),
@@ -20,7 +21,7 @@ var gulp = require('gulp'), // Gulp
     autoprefixer = require('autoprefixer'); // плагин postcss для сжатия для ДДобавление вендорных префиксов
 
 // Задание путей к используемым файлам и папкам
-var cmsTpl = 'catalog/view/theme/komplekstehsnab',
+const cmsTpl = 'catalog/view/theme/komplekstehsnab',
     paths = {
         watch: {
             pug: './app/pug/**/*.pug',
@@ -83,11 +84,11 @@ var cmsTpl = 'catalog/view/theme/komplekstehsnab',
     };
 
 // Подключение Browsersync
-var browserSync = require('browser-sync').create(),
+const browserSync = require('browser-sync').create(),
     reload = browserSync.reload;
 
 // Для работы Browsersync, автообновление браузера
-function server() {
+function serve() {
     browserSync.init({
         server: paths.dist.html
     });
@@ -120,7 +121,7 @@ function html($file) {
 
 // Для объединения шрифтов
 function fonts() {
-    var fonts = paths.app.vendor.fonts.concat(paths.app.common.fonts);
+    const fonts = paths.app.vendor.fonts.concat(paths.app.common.fonts);
     return gulp.src(fonts)
         .pipe(gulp.dest(paths.dist.fonts));
 }
@@ -143,6 +144,9 @@ function cssCommon() {
 function jsCommon() {
     return gulp.src(paths.app.common.js)
         .pipe(plumber())
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
         .pipe(uglify())
         .pipe(rename({suffix:'.min'}))
         .pipe(gulp.dest(paths.dist.js))
@@ -163,6 +167,9 @@ function cssVendor() {
 function jsVendor() {
     return gulp.src(paths.app.vendor.js)
         .pipe(concat('vendor.min.js'))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
         .pipe(uglify())
         .pipe(gulp.dest(paths.dist.js));
 }
@@ -192,7 +199,7 @@ function spritesSvg() {
 
 // Для обработки изображений
 function img($image) {
-    var $images = (typeof($image) === 'string') ? $image : paths.app.common.img;
+    const $images = (typeof($image) === 'string') ? $image : paths.app.common.img;
     return gulp.src($images)
         .pipe(imagemin({use: [pngquant()]}))
         .pipe(gulp.dest(paths.dist.img));
@@ -206,7 +213,7 @@ exports.cssVendor = cssVendor;
 exports.jsVendor = jsVendor;
 exports.spritesSvg = spritesSvg;
 exports.img = img;
-exports.server = server;
+exports.serve = serve;
 gulp.task('default', gulp.series(
-    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,img,server)
+    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,img,serve)
 ));
