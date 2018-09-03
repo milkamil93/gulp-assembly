@@ -168,7 +168,7 @@ function jsVendor() {
     return gulp.src(paths.app.vendor.js)
         .pipe(concat('vendor.min.js'))
         .pipe(babel({
-            presets: ['es2015']
+            presets: ['@babel/env']
         }))
         .pipe(uglify())
         .pipe(gulp.dest(paths.dist.js));
