@@ -26,7 +26,7 @@ const cmsTpl = 'assets/templates/',
         watch: {
             pug: './app/pug/**/*.pug',
             styl: './app/styljs/common.styl',
-            js: './app/styljs/common.js',
+            js: './app/styljs/*.js',
             svg: './app/materials/svg/*.svg',
             img: [
                 './app/materials/images/**/*',
@@ -45,7 +45,7 @@ const cmsTpl = 'assets/templates/',
             common: {
                 html: './app/pug/pages/*.pug',
                 styl: './app/styljs/common.styl',
-                js: './app/styljs/common.js',
+                js: './app/styljs/*.js',
                 css: [
                     './app/materials/fonts/**/*.css'
                 ],
@@ -143,11 +143,8 @@ function cssCommon() {
 function jsCommon() {
     return gulp.src(paths.app.common.js)
         .pipe(plumber())
-        .pipe(babel({
-            presets: ['@babel/env']
-        }))
         .pipe(uglify())
-        .pipe(rename({suffix:'.min'}))
+        .pipe(concat('common.min.js'))
         .pipe(gulp.dest(paths.dist.js))
         .pipe(browserSync.stream());
 }
@@ -166,9 +163,6 @@ function cssVendor() {
 function jsVendor() {
     return gulp.src(paths.app.vendor.js)
         .pipe(concat('vendor.min.js'))
-        .pipe(babel({
-            presets: ['@babel/env']
-        }))
         .pipe(uglify())
         .pipe(gulp.dest(paths.dist.js));
 }
