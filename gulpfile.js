@@ -47,12 +47,10 @@ const cmsTpl = 'assets/templates/',
                 styl: './app/styljs/common.styl',
                 js: './app/styljs/common.js',
                 css: [
-                    './app/materials/fonts/**/*.css',
-                    './app/materials/fonts/*.css'
+                    './app/materials/fonts/**/*.css'
                 ],
                 fonts: [
-                    './app/materials/fonts/**/*.{ttf,woff,woff2,svg,eot}',
-                    './app/materials/fonts/*.{ttf,woff,woff2,svg,eot}'
+                    './app/materials/fonts/**/*.{ttf,woff,woff2,svg,eot}'
                 ],
                 img: [
                     './app/materials/images/**/*.{jpg,jpeg,png}',
@@ -123,6 +121,7 @@ function html($file) {
 function fonts() {
     const fonts = paths.app.vendor.fonts.concat(paths.app.common.fonts);
     return gulp.src(fonts)
+        .pipe(rename({dirname:''}))
         .pipe(gulp.dest(paths.dist.fonts));
 }
 
