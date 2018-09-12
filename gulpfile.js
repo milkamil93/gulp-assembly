@@ -21,7 +21,7 @@ const gulp = require('gulp'), // Gulp
     autoprefixer = require('autoprefixer'); // плагин postcss для сжатия для ДДобавление вендорных префиксов
 
 // Задание путей к используемым файлам и папкам
-const cmsTpl = 'catalog/view/theme/komplekstehsnab',
+const cmsTpl = 'assets/templates/',
     paths = {
         watch: {
             pug: './app/pug/**/*.pug',
@@ -35,8 +35,8 @@ const cmsTpl = 'catalog/view/theme/komplekstehsnab',
         },
         dist: {
             html: './dist',
-            css: './dist/' +cmsTpl+ '/stylesheet',
-            fonts: './dist/' +cmsTpl+ '/stylesheet/fonts',
+            css: './dist/' +cmsTpl+ '/css',
+            fonts: './dist/' +cmsTpl+ '/css/fonts',
             js: './dist/' +cmsTpl+ '/js',
             img: './dist/' +cmsTpl+ '/images',
             svg: './dist/' +cmsTpl+ '/images/svg'
