@@ -11,7 +11,6 @@ const gulp = require('gulp'), // Gulp
     stylus = require('gulp-stylus'), // Stylus
     sourcemaps = require('gulp-sourcemaps'), // Карта css
     uglify = require('gulp-uglify'), // Минификация JS-файлов
-    babel = require('gulp-babel'), // Поддержка ES6
     svgSprite = require('gulp-svg-sprite'), // Склеивание svg в один
     cheerio = require('gulp-cheerio'),
     nib = require('nib'),
@@ -22,6 +21,9 @@ const gulp = require('gulp'), // Gulp
 
 // Задание путей к используемым файлам и папкам
 const cmsTpl = 'assets/templates/',
+    // массив svg которые не нужно форматировать
+    svgIgnore = ['direction.svg'],
+
     paths = {
         watch: {
             pug: './app/pug/**/*.pug',
@@ -171,11 +173,16 @@ function jsVendor() {
 function spritesSvg() {
     return gulp.src(paths.app.common.svg)
         .pipe(cheerio({
-            run: function ($) {
-                $('style').remove();
-                $('[fill]').removeAttr('fill');
-                $('[style]').removeAttr('style');
-                $('[stroke]').removeAttr('stroke');
+            run: function ($, file) {
+                var $path = file.path.split('\\'),
+                    $filename = $path[$path.length-1];
+                if (svgIgnore.indexOf($filename)) {
+                    $('style').remove();
+                    $('[fill]').removeAttr('fill');
+                    $('[style]').removeAttr('style');
+                    $('[stroke]').removeAttr('stroke');
+                    $('[class]').removeAttr('class');
+                }
             },
             parserOptions: { xmlMode: true }
         }))
