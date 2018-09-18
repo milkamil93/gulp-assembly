@@ -174,9 +174,15 @@ function spritesSvg() {
     return gulp.src(paths.app.common.svg)
         .pipe(cheerio({
             run: function ($, file) {
-                var $path = file.path.split('\\'),
+                var $status = true,
+                    $path = file.path.split('\\'),
                     $filename = $path[$path.length-1];
-                if (svgIgnore.indexOf($filename)) {
+                svgIgnore.forEach(function (item) {
+                    if(!item.indexOf($filename)) {
+                        $status = false;
+                    }
+                });
+                if ($status) {
                     $('style').remove();
                     $('[fill]').removeAttr('fill');
                     $('[style]').removeAttr('style');
