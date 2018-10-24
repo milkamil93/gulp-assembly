@@ -229,6 +229,7 @@ exports.jsCommon = jsCommon;
 exports.cssVendor = cssVendor;
 exports.jsVendor = jsVendor;
 exports.spritesSvg = spritesSvg;
+exports.svgFiles = svgFiles;
 exports.img = img;
 exports.serve = serve;
 gulp.task('default', gulp.series(
