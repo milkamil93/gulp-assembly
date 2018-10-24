@@ -2,15 +2,15 @@
 
 mixin svg(id,cls)
     -var cls = cls ? ' ' + cls : ''
-    svg(class="icon icon-" + id + cls)
-        use(xlink:href=cmsTpl + "images/svg/sprite.svg#" + id)
+    svg(class='icon icon-' + id + cls)
+        use(xlink:href=cmsTpl + 'images/svg/sprite.svg#' + id)
 
 doctype html
 html(lang='ru')
     head
         meta(charset='UTF-8')
         meta(http-equiv='X-UA-Compatible' content='IE=edge')
-        meta(name="author" content="Программирование и верстка: @milkamil93.")
+        meta(name='author' content='Программирование и верстка: @milkamil93.')
         meta(name='viewport', content='width=device-width,initial-scale=1,shrink-to-fit=no,maximum-scale=1')
         title [*titl*]
         base(href='[(site_url)]')
@@ -21,7 +21,7 @@ html(lang='ru')
         meta(property='og:type', content='website')
         meta(property='og:url', content='[(site_url)][~[*id*]~]')
         meta(property='og:image', content=cmsTpl + 'assets/images/logo.png')
-        meta(name="theme-color" content="#fff")
+        meta(name='theme-color' content="#fff")
         link(rel='stylesheet' href=cmsTpl + 'css/vendor.min.css')
         link(rel='stylesheet' href=cmsTpl + 'css/common.min.css')
     body
