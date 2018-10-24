@@ -62,10 +62,10 @@ const cmsTpl = 'assets/templates/',
             },
             vendor: {
                 fonts: [
-                    './bower_components/open-sans-fontface/fonts/**/*.{ttf,woff,woff2,svg,eot}'
+                    //'./bower_components/open-sans-fontface/fonts/**/*.{ttf,woff,woff2,svg,eot}'
                 ],
                 css: [
-                    './bower_components/open-sans-fontface/open-sans.css',
+                    //'./bower_components/open-sans-fontface/open-sans.css',
 
                     './bower_components/normalize.css/normalize.css',
                     './bower_components/bootstrap/dist/css/bootstrap.min.css',
