@@ -145,8 +145,10 @@ function cssCommon() {
 function jsCommon() {
     return gulp.src(paths.app.common.js)
         .pipe(plumber())
+        .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(concat('common.min.js'))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.dist.js))
         .pipe(browserSync.stream());
 }
