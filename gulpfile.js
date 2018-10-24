@@ -30,6 +30,7 @@ const cmsTpl = 'assets/templates/',
             styl: './app/styljs/common.styl',
             js: './app/styljs/*.js',
             svg: './app/materials/svg/*.svg',
+            svgfiles: './app/materials/svgfiles/*.svg',
             img: [
                 './app/materials/images/**/*',
                 './app/materials/images/*'
@@ -41,7 +42,7 @@ const cmsTpl = 'assets/templates/',
             fonts: './dist/' +cmsTpl+ '/css/fonts',
             js: './dist/' +cmsTpl+ '/js',
             img: './dist/' +cmsTpl+ '/images',
-            svg: './dist/' +cmsTpl+ '/images/svg'
+            svg: './dist/' +cmsTpl+ '/images/svg',
         },
         app: {
             common: {
@@ -58,7 +59,8 @@ const cmsTpl = 'assets/templates/',
                     './app/materials/images/**/*.{jpg,jpeg,png}',
                     './app/materials/images/*.{jpg,jpeg,png}'
                 ],
-                svg: './app/materials/svg/*.svg'
+                svg: './app/materials/svg/*.svg',
+                svgfiles: './app/materials/svgfiles/*.svg'
             },
             vendor: {
                 fonts: [
@@ -106,6 +108,7 @@ function serve() {
     gulp.watch(paths.watch.styl, gulp.series('cssCommon'));
     gulp.watch(paths.watch.js, gulp.series('jsCommon'));
     gulp.watch(paths.watch.svg, gulp.series('spritesSvg'));
+    gulp.watch(paths.watch.svgfiles, gulp.series('svgFiles'));
     gulp.watch(paths.dist.html+'/*.html').on('change', reload);
 }
 
@@ -205,6 +208,12 @@ function spritesSvg() {
         .pipe(gulp.dest(paths.dist.svg));
 }
 
+// Целые svg
+function svgFiles() {
+    return gulp.src(paths.app.common.svgfiles)
+        .pipe(gulp.dest(paths.dist.svg));
+}
+
 // Для обработки изображений
 function img($image) {
     const $images = (typeof($image) === 'string') ? $image : paths.app.common.img;
@@ -223,5 +232,5 @@ exports.spritesSvg = spritesSvg;
 exports.img = img;
 exports.serve = serve;
 gulp.task('default', gulp.series(
-    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,img,serve)
+    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,svgFiles,img,serve)
 ));
