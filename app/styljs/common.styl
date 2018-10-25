@@ -11,6 +11,14 @@ rem() {
   return remified
 }
 
+min_size()
+  min-width arguments[0]
+  min-height arguments[1] || arguments[0]
+
+max_size()
+  max-width arguments[0]
+  max-height arguments[1] || arguments[0]
+
 // Breakpoints
 xs = 481px // 481...767px
 sm = 768px // 768...991px
@@ -18,14 +26,13 @@ md = 992px // 992...1199px
 lg = 1200px // 1200...1599px
 xl = 1600px // >1600px
 
-fontvag = 'VAG World', sans-serif
-fontbase = 'Open Sans', sans-serif
+font = 'Roboto', sans-serif
 
 html
   font-size 16px
 
 body
-  font-family fontbase
+  font-family font
 
 +above(lg)
   .container
