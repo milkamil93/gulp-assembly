@@ -123,7 +123,7 @@ function html($file) {
     $file = (typeof($file) === 'string') ? $file : paths.app.common.html;
     return gulp.src($file)
         .pipe(plumber())
-        .pipe(pug({pretty: true}))
+        .pipe(pug({pretty: false}))
         .pipe(gulp.dest(paths.dist.html))
         .pipe(browserSync.stream());
 }
