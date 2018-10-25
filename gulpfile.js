@@ -28,7 +28,10 @@ const cmsTpl = 'assets/templates/',
         watch: {
             pug: './app/pug/**/*.pug',
             styl: './app/styljs/common.styl',
-            js: './app/styljs/*.js',
+            js: [
+                './app/styljs/*.js',
+                './app/styljs/**/*.js'
+            ],
             svg: './app/materials/svg/*.svg',
             svgfiles: './app/materials/svgfiles/*.svg',
             img: [
@@ -48,7 +51,10 @@ const cmsTpl = 'assets/templates/',
             common: {
                 html: './app/pug/pages/*.pug',
                 styl: './app/styljs/common.styl',
-                js: './app/styljs/*.js',
+                js: [
+                    './app/styljs/*.js',
+                    './app/styljs/**/*.js'
+                ],
                 css: [
                     './app/materials/fonts/**/*.css'
                 ],
