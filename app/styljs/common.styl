@@ -19,6 +19,16 @@ max_size()
   max-width arguments[0]
   max-height arguments[1] || arguments[0]
 
+placeholder()
+  &::-webkit-input-placeholder
+    {block}
+  &:-moz-placeholder
+    {block}
+  &::-moz-placeholder
+    {block}
+  &:-ms-input-placeholder
+    {block}
+
 // Breakpoints
 xs = 481px // 481...767px
 sm = 768px // 768...991px
