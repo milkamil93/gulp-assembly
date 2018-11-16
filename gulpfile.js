@@ -4,6 +4,8 @@
 const gulp = require('gulp'), // Gulp
     concat = require('gulp-concat'), // Объединение файлов
     imagemin = require('gulp-imagemin'), // Оптимизация изображений
+    mozjpeg = require('imagemin-mozjpeg'),
+    pngquant = require('imagemin-pngquant'),
     plumber = require('gulp-plumber'), // Обработка ошибок
     pug = require('gulp-pug'), // Pug
     rename = require('gulp-rename'), // Переименование файлов
@@ -225,7 +227,9 @@ function img($image) {
     return gulp.src($images)
         .pipe(imagemin([
             imagemin.jpegtran({progressive: true}),
-            imagemin.optipng({optimizationLevel: 5})
+            mozjpeg({progressive: true}),
+            imagemin.optipng({optimizationLevel: 7}),
+            pngquant({quality: '80'})
         ]))
         .pipe(gulp.dest(paths.dist.img));
 }
