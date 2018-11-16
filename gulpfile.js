@@ -5,7 +5,6 @@ const gulp = require('gulp'), // Gulp
     concat = require('gulp-concat'), // Объединение файлов
     imagemin = require('gulp-imagemin'), // Оптимизация изображений
     plumber = require('gulp-plumber'), // Обработка ошибок
-    pngquant = require('imagemin-pngquant'), // Оптимизация PNG-изображений
     pug = require('gulp-pug'), // Pug
     rename = require('gulp-rename'), // Переименование файлов
     stylus = require('gulp-stylus'), // Stylus
@@ -224,7 +223,10 @@ function svgFiles() {
 function img($image) {
     const $images = (typeof($image) === 'string') ? $image : paths.app.common.img;
     return gulp.src($images)
-        .pipe(imagemin({use: [pngquant()]}))
+        .pipe(imagemin([
+            imagemin.jpegtran({progressive: true}),
+            imagemin.optipng({optimizationLevel: 5})
+        ]))
         .pipe(gulp.dest(paths.dist.img));
 }
 
