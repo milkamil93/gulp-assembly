@@ -35,6 +35,7 @@ const cmsTpl = 'assets/templates/',
             ],
             svg: './app/materials/svg/*.svg',
             svgfiles: './app/materials/svgfiles/*.svg',
+            to_root: './app/materials/to_root/*.*',
             img: [
                 './app/materials/images/**/*',
                 './app/materials/images/*'
@@ -67,7 +68,8 @@ const cmsTpl = 'assets/templates/',
                     './app/materials/images/*.{jpg,jpeg,png}'
                 ],
                 svg: './app/materials/svg/*.svg',
-                svgfiles: './app/materials/svgfiles/*.svg'
+                svgfiles: './app/materials/svgfiles/*.svg',
+                to_root: './app/materials/to_root/*.*'
             },
             vendor: {
                 fonts: [
@@ -116,6 +118,7 @@ function serve() {
     gulp.watch(paths.watch.js, gulp.series('jsCommon'));
     gulp.watch(paths.watch.svg, gulp.series('spritesSvg'));
     gulp.watch(paths.watch.svgfiles, gulp.series('svgFiles'));
+    gulp.watch(paths.watch.to_root, gulp.series('to_root'));
     gulp.watch(paths.dist.html+'/*.html').on('change', reload);
 }
 
@@ -234,6 +237,12 @@ function img($image) {
         .pipe(gulp.dest(paths.dist.img));
 }
 
+// Перекидываем файлы в корень
+function to_root() {
+    return gulp.src(paths.app.common.to_root)
+        .pipe(gulp.dest(paths.dist.html));
+}
+
 // Таск для разработки
 exports.html = html;
 exports.cssCommon = cssCommon;
@@ -242,8 +251,9 @@ exports.cssVendor = cssVendor;
 exports.jsVendor = jsVendor;
 exports.spritesSvg = spritesSvg;
 exports.svgFiles = svgFiles;
+exports.to_root = to_root;
 exports.img = img;
 exports.serve = serve;
 gulp.task('default', gulp.series(
-    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,svgFiles,img,serve)
+    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,svgFiles,img,to_root,serve)
 ));
