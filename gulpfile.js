@@ -230,9 +230,9 @@ function img($image) {
     return gulp.src($images)
         .pipe(imagemin([
             imagemin.jpegtran({progressive: true}),
-            mozjpeg({progressive: true, quality: 75}),
+            mozjpeg({progressive: true, quality: 80}),
             imagemin.optipng({optimizationLevel: 7}),
-            pngquant({quality: 75})
+            pngquant({quality: 80})
         ]))
         .pipe(gulp.dest(paths.dist.img));
 }
