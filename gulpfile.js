@@ -28,11 +28,8 @@ const cmsTpl = 'assets/templates/',
     paths = {
         watch: {
             pug: './app/pug/**/*.pug',
-            styl: './app/styljs/common.styl',
-            js: [
-                './app/styljs/*.js',
-                './app/styljs/**/*.js'
-            ],
+            styl: './app/styl/common.styl',
+            js: './app/js/*.js',
             svg: './app/materials/svg/*.svg',
             svgfiles: './app/materials/svgfiles/*.svg',
             to_root: './app/materials/to_root/*.*',
@@ -52,11 +49,8 @@ const cmsTpl = 'assets/templates/',
         app: {
             common: {
                 html: './app/pug/pages/*.pug',
-                styl: './app/styljs/common.styl',
-                js: [
-                    './app/styljs/*.js',
-                    './app/styljs/**/*.js'
-                ],
+                styl: './app/styl/common.styl',
+                js: './app/js/*.js',
                 css: [
                     './app/materials/fonts/**/*.css'
                 ],
