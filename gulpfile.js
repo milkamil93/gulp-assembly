@@ -248,6 +248,7 @@ exports.svgFiles = svgFiles;
 exports.to_root = to_root;
 exports.img = img;
 exports.serve = serve;
+
 gulp.task('default', gulp.series(
     gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,svgFiles,img,to_root,serve)
 ));
