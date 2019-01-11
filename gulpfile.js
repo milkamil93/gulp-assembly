@@ -20,8 +20,12 @@ const gulp = require('gulp'), // Gulp
     cssnano = require('gulp-cssnano'), // плагин postcss для сжатия
     autoprefixer = require('autoprefixer'); // плагин postcss для сжатия для ДДобавление вендорных префиксов
 
-// Задание путей к используемым файлам и папкам
-const cmsTpl = 'assets/templates/',
+
+const
+
+    // Задание путей к используемым файлам и папкам
+    cmsTpl = 'assets/templates/',
+
     // массив svg которые не нужно форматировать
     svgIgnore = ['direction.svg'],
 
