@@ -86,7 +86,8 @@ const
                     './bower_components/svg4everybody/dist/svg4everybody.min.js',
                     './bower_components/bootstrap/dist/js/bootstrap.min.js',
                     './bower_components/fancybox/dist/jquery.fancybox.js',
-                    './bower_components/swiper/dist/js/swiper.min.js'
+                    './bower_components/swiper/dist/js/swiper.min.js',
+                    './bower_components/inputmask/dist/min/jquery.inputmask.bundle.min.js'
                 ]
             }
         }
