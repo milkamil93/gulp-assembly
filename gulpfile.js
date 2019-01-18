@@ -27,7 +27,7 @@ const
     cmsTpl = 'assets/templates/',
 
     // массив svg которые не нужно форматировать
-    svgIgnore = ['direction.svg'],
+    svgIgnore = ['logo.svg'],
 
     paths = {
         watch: {
