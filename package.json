@@ -28,7 +28,7 @@
   "dependencies": {
     "gulp-cheerio": "^0.6.3",
     "imagemin-mozjpeg": "^8.0.0",
-    "imagemin-pngquant": "^7.0.0",
+    "imagemin-pngquant": "6.0.1",
     "npm-check-updates": "^2.14.3"
   },
   "description": "Уже должен быть установлен Node.js",
