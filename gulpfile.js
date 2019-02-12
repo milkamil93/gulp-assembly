@@ -24,7 +24,7 @@ const gulp = require('gulp'), // Gulp
 const
 
     // Задание путей к используемым файлам и папкам
-    cmsTpl = 'assets/templates/',
+    cmsTpl = 'public/assets/templates/',
 
     // массив svg которые не нужно форматировать
     svgIgnore = ['logo.svg'],
@@ -229,9 +229,9 @@ function img($image) {
     return gulp.src($images)
         .pipe(imagemin([
             imagemin.jpegtran({progressive: true}),
-            mozjpeg({progressive: true, quality: 80}),
+            mozjpeg({progressive: true, quality: 90}),
             imagemin.optipng({optimizationLevel: 7}),
-            pngquant({quality: 80})
+            pngquant({quality: [0.8, 0.85]})
         ]))
         .pipe(gulp.dest(paths.dist.img));
 }

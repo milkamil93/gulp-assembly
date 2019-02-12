@@ -12,14 +12,14 @@ html(lang='ru')
         meta(http-equiv='X-UA-Compatible' content='IE=edge')
         meta(name='author' content='Программирование и верстка: @milkamil93.')
         meta(name='viewport', content='width=device-width,initial-scale=1,shrink-to-fit=no,maximum-scale=1,height=device-height,viewport-fit=cover')
-        title [*titl*]
+        title @modxParser('[*titl*]')
         base(href='[(site_url)]')
-        meta(name='description', content='[*desc*]')
-        meta(name='keywords', content='[*keyw*]')
-        meta(property='og:title', content='[*titl*]')
-        meta(property="og:description" content="[*desc*]`]")
+        meta(name='description', content="@modxParser('[*desc*]')")
+        meta(name='keywords', content="@modxParser('[*keyw*]')")
+        meta(property='og:title', content="@modxParser('[*titl*]')")
+        meta(property="og:description" content="@modxParser('[*desc*]')")
         meta(property='og:type', content='website')
-        meta(property='og:url', content='[(site_url)][~[*id*]~]')
+        meta(property='og:url', content="{{$modx->getConfig('site_url').substr($modx->makeUrl($modx->documentIdentifier),1)}}")
         meta(property='og:image', content=cmsTpl + 'assets/images/logo.png')
         meta(name='theme-color' content="#fff")
         link(rel='stylesheet' href=cmsTpl + 'css/vendor.min.css')
@@ -27,13 +27,13 @@ html(lang='ru')
     body
         .block
             div
-                header.block__header.header
+                header.header
                     h2 Header
 
-                main.block__main.main
+                main
                     block main
 
-            footer.block__footer.footer
+            footer.footer
                 h2 Footer
 
         script(src=cmsTpl + 'js/vendor.min.js')
