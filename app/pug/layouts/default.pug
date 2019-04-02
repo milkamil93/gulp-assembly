@@ -2,7 +2,7 @@
 
 mixin svg(id,cls)
     -var cls = cls ? ' ' + cls : ''
-    svg(class='icon icon-' + id + cls)
+    svg(class='icon icon-' + id + cls width="100%" height="100%" xmlns="http://www.w3.org/2000/svg")
         use(xlink:href=cmsTpl + 'images/svg/sprite.svg#' + id)
 
 doctype html
