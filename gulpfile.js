@@ -24,7 +24,7 @@ const gulp = require('gulp'), // Gulp
 const
 
     // Задание путей к используемым файлам и папкам
-    cmsTpl = 'public/assets/templates/',
+    cmsTpl = 'public_html/',
 
     // массив svg которые не нужно форматировать
     svgIgnore = ['logo.svg'],
@@ -35,7 +35,7 @@ const
             styl: './app/styl/common.styl',
             js: './app/js/*.js',
             svg: './app/materials/svg/*.svg',
-            svgfiles: './app/materials/svgfiles/*.svg',
+            svgFiles: './app/materials/svgFiles/*.svg',
             to_root: './app/materials/to_root/*.*',
             img: [
                 './app/materials/images/**/*',
@@ -43,12 +43,12 @@ const
             ]
         },
         dist: {
-            html: './dist',
-            css: './dist/' +cmsTpl+ '/css',
-            fonts: './dist/' +cmsTpl+ '/css/fonts',
-            js: './dist/' +cmsTpl+ '/js',
-            img: './dist/' +cmsTpl+ '/images',
-            svg: './dist/' +cmsTpl+ '/images/svg',
+            html: './' + cmsTpl,
+            css: './' + cmsTpl + '/css',
+            fonts: './' + cmsTpl + '/css/fonts',
+            js: './' + cmsTpl + '/js',
+            img: './' + cmsTpl + '/images',
+            svg: './' + cmsTpl + '/images/svg',
         },
         app: {
             common: {
@@ -66,7 +66,7 @@ const
                     './app/materials/images/*.{jpg,jpeg,png}'
                 ],
                 svg: './app/materials/svg/*.svg',
-                svgfiles: './app/materials/svgfiles/*.svg',
+                svgFiles: './app/materials/svgFiles/*.svg',
                 to_root: './app/materials/to_root/*.*'
             },
             vendor: {
@@ -116,7 +116,7 @@ function serve() {
     gulp.watch(paths.watch.styl, gulp.series('cssCommon'));
     gulp.watch(paths.watch.js, gulp.series('jsCommon'));
     gulp.watch(paths.watch.svg, gulp.series('spritesSvg'));
-    gulp.watch(paths.watch.svgfiles, gulp.series('svgFiles'));
+    gulp.watch(paths.watch.svgFiles, gulp.series('svgFiles'));
     gulp.watch(paths.watch.to_root, gulp.series('to_root'));
     gulp.watch(paths.dist.html+'/*.html').on('change', reload);
 }
@@ -219,7 +219,7 @@ function spritesSvg() {
 
 // Целые svg
 function svgFiles() {
-    return gulp.src(paths.app.common.svgfiles)
+    return gulp.src(paths.app.common.svgFiles)
         .pipe(gulp.dest(paths.dist.svg));
 }
 
