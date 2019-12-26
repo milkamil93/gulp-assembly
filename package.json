@@ -31,7 +31,7 @@
   },
   "dependencies": {},
   "description": "Уже должен быть установлен Node.js",
-  "name": "zapravka-konkurs",
+  "name": "gulpproject",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/milkamil93/gulp-assembly.git"
@@ -40,5 +40,15 @@
   "bugs": {
     "url": "https://github.com/milkamil93/gulp-assembly/issues"
   },
-  "homepage": "https://github.com/milkamil93/gulp-assembly#readme"
+  "homepage": "https://github.com/milkamil93/gulp-assembly#readme",
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

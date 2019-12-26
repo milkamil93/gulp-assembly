@@ -24,7 +24,7 @@ const gulp = require('gulp'), // Gulp
 const
 
     // Задание путей к используемым файлам и папкам
-    cmsTpl = 'public_html/',
+    cmsTpl = 'public/',
 
     // массив svg которые не нужно форматировать
     svgIgnore = ['logo.svg'],
@@ -145,7 +145,7 @@ function cssCommon() {
         .pipe(sourcemaps.init())
         .pipe(plumber())
         .pipe(stylus({use:[nib(),rupture()]}))
-        .pipe(postcss([autoprefixer({browsers:['last 4 version']})]))
+        .pipe(postcss())
         .pipe(cssnano({discardUnused: {fontFace: false}}))
         .pipe(rename({suffix:'.min'}))
         .pipe(sourcemaps.write('.'))
