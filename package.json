@@ -2,14 +2,21 @@
   "version": "1.0.0",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gulp": "gulp default"
   },
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
     "autoprefixer": "*",
+    "babel-loader": "^8.0.6",
     "browser-sync": "*",
-    "browserslist": "*",
+    "browserslist": "^4.8.3",
     "gulp": "*",
+    "gulp-cheerio": "*",
     "gulp-concat": "*",
     "gulp-cssnano": "*",
     "gulp-imagemin": "*",
@@ -21,15 +28,23 @@
     "gulp-stylus": "*",
     "gulp-svg-sprite": "*",
     "gulp-uglify": "*",
-    "nib": "*",
-    "pug": "*",
-    "rupture": "*",
-    "gulp-cheerio": "*",
     "imagemin-mozjpeg": "*",
     "imagemin-pngquant": "*",
-    "npm-check-updates": "*"
+    "nib": "*",
+    "npm-check-updates": "*",
+    "pug": "*",
+    "rupture": "*",
+    "webpack": "^4.41.5",
+    "webpack-stream": "^5.2.1"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@fancyapps/fancybox": "^3.5.7",
+    "bootstrap": "^4.4.1",
+    "inputmask": "^5.0.3",
+    "jquery": "^3.4.1",
+    "normalize.css": "^8.0.1",
+    "swiper": "^5.3.0"
+  },
   "description": "Уже должен быть установлен Node.js",
   "name": "gulpproject",
   "repository": {

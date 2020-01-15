@@ -4,7 +4,6 @@
 const gulp = require('gulp'), // Gulp
     concat = require('gulp-concat'), // Объединение файлов
     imagemin = require('gulp-imagemin'), // Оптимизация изображений
-    mozjpeg = require('imagemin-mozjpeg'),
     pngquant = require('imagemin-pngquant'),
     plumber = require('gulp-plumber'), // Обработка ошибок
     pug = require('gulp-pug'), // Pug
@@ -18,7 +17,8 @@ const gulp = require('gulp'), // Gulp
     rupture = require('rupture'),
     postcss = require('gulp-postcss'),
     cssnano = require('gulp-cssnano'), // плагин postcss для сжатия
-    autoprefixer = require('autoprefixer'); // плагин postcss для сжатия для ДДобавление вендорных префиксов
+    webpack = require('webpack'),
+    webpackStream = require('webpack-stream');
 
 
 const
@@ -33,9 +33,9 @@ const
         watch: {
             pug: './app/pug/**/*.pug',
             styl: './app/styl/common.styl',
-            js: './app/js/*.js',
+            js: './app/js/**/**/*.js',
             svg: './app/materials/svg/*.svg',
-            svgFiles: './app/materials/svgFiles/*.svg',
+            svg_files: './app/materials/svg_files/*.svg',
             to_root: './app/materials/to_root/*.*',
             img: [
                 './app/materials/images/**/*',
@@ -44,17 +44,17 @@ const
         },
         dist: {
             html: './' + cmsTpl,
-            css: './' + cmsTpl + '/css',
-            fonts: './' + cmsTpl + '/css/fonts',
-            js: './' + cmsTpl + '/js',
-            img: './' + cmsTpl + '/images',
-            svg: './' + cmsTpl + '/images/svg',
+            css: './' + cmsTpl + 'css',
+            fonts: './' + cmsTpl + 'css/fonts',
+            js: './' + cmsTpl + 'js',
+            img: './' + cmsTpl + 'images',
+            svg: './' + cmsTpl + 'images/svg',
         },
         app: {
             common: {
                 html: './app/pug/pages/*.pug',
                 styl: './app/styl/common.styl',
-                js: './app/js/*.js',
+                js: './app/js/*',
                 css: [
                     './app/materials/fonts/**/*.css'
                 ],
@@ -66,31 +66,22 @@ const
                     './app/materials/images/*.{jpg,jpeg,png}'
                 ],
                 svg: './app/materials/svg/*.svg',
-                svgFiles: './app/materials/svgFiles/*.svg',
+                svg_files: './app/materials/svg_files/*.svg',
                 to_root: './app/materials/to_root/*.*'
             },
             vendor: {
-                fonts: [
-                    //'./bower_components/open-sans-fontface/fonts/**/*.{ttf,woff,woff2,svg,eot}'
+                js: [
+                    './node_modules/jquery/dist/jquery.min.js',
+                    './node_modules/swiper/js/swiper.min.js',
+                    './node_modules/inputmask/dist/jquery.inputmask.min.js',
+                    './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js'
                 ],
                 css: [
-                    //'./bower_components/open-sans-fontface/open-sans.css',
-
-                    './bower_components/normalize.css/normalize.css',
-                    './bower_components/bootstrap/dist/css/bootstrap.min.css',
-                    './bower_components/fancybox/dist/jquery.fancybox.css',
-                    './bower_components/swiper/dist/css/swiper.min.css'
-                ],
-                js: [
-                    './bower_components/jquery/dist/jquery.min.js',
-                    './bower_components/svg4everybody/dist/svg4everybody.min.js',
-                    './bower_components/bootstrap/dist/js/bootstrap.min.js',
-                    './bower_components/fancybox/dist/jquery.fancybox.js',
-                    './bower_components/swiper/dist/js/swiper.min.js',
-                    './bower_components/inputmask/dist/min/jquery.inputmask.bundle.min.js'
+                    './node_modules/bootstrap/dist/css/bootstrap.min.css',
+                    './node_modules/normalize.css/normalize.css'
                 ]
             }
-        }
+        },
     };
 
 // Подключение Browsersync
@@ -103,12 +94,8 @@ function serve() {
         server: paths.dist.html
     });
     gulp.watch(paths.watch.pug).on('change', function ($file) {
-        if (~$file.indexOf('layouts')) {
-            html();
-        } else {
-            html('./'+$file.replace(/\\/g,"/"));
-        }
-
+        if (~$file.indexOf('layouts')) html();
+        else html('./'+$file.replace(/\\/g,"/"));
     });
     gulp.watch(paths.watch.img).on('all', function ($action,$file) {
         img('./'+$file.replace(/\\/g,"/"));
@@ -116,8 +103,8 @@ function serve() {
     gulp.watch(paths.watch.styl, gulp.series('cssCommon'));
     gulp.watch(paths.watch.js, gulp.series('jsCommon'));
     gulp.watch(paths.watch.svg, gulp.series('spritesSvg'));
-    gulp.watch(paths.watch.svgFiles, gulp.series('svgFiles'));
-    gulp.watch(paths.watch.to_root, gulp.series('to_root'));
+    gulp.watch(paths.watch.svg_files, gulp.series('svgFiles'));
+    gulp.watch(paths.watch.to_root, gulp.series('toRoot'));
     gulp.watch(paths.dist.html+'/*.html').on('change', reload);
 }
 
@@ -133,8 +120,7 @@ function html($file) {
 
 // Для объединения шрифтов
 function fonts() {
-    const fonts = paths.app.vendor.fonts.concat(paths.app.common.fonts);
-    return gulp.src(fonts)
+    return gulp.src(paths.app.common.fonts)
         .pipe(rename({dirname:''}))
         .pipe(gulp.dest(paths.dist.fonts));
 }
@@ -158,8 +144,22 @@ function jsCommon() {
     return gulp.src(paths.app.common.js)
         .pipe(plumber())
         .pipe(sourcemaps.init())
+        .pipe(webpackStream({
+            mode: 'production',
+            output: {
+                filename: 'common.min.js',
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.(js)$/,
+                        loader: 'babel-loader'
+                    }
+                ]
+            },
+
+        }))
         .pipe(uglify())
-        .pipe(concat('common.min.js'))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.dist.js))
         .pipe(browserSync.stream());
@@ -167,7 +167,7 @@ function jsCommon() {
 
 // Для объединения и минификации CSS-файлов внешних библиотек
 function cssVendor() {
-    return gulp.src(paths.app.common.css.concat(paths.app.vendor.css))
+    return gulp.src(paths.app.vendor.css)
         .pipe(sourcemaps.init())
         .pipe(concat('vendor.min.css'))
         .pipe(cssnano({discardUnused: {fontFace: false}}))
@@ -219,7 +219,7 @@ function spritesSvg() {
 
 // Целые svg
 function svgFiles() {
-    return gulp.src(paths.app.common.svgFiles)
+    return gulp.src(paths.app.common.svg_files)
         .pipe(gulp.dest(paths.dist.svg));
 }
 
@@ -229,7 +229,6 @@ function img($image) {
     return gulp.src($images)
         .pipe(imagemin([
             imagemin.jpegtran({progressive: true}),
-            mozjpeg({progressive: true, quality: 90}),
             imagemin.optipng({optimizationLevel: 7}),
             pngquant({quality: [0.8, 0.85]})
         ]))
@@ -237,23 +236,23 @@ function img($image) {
 }
 
 // Перекидываем файлы в корень
-function to_root() {
+function toRoot() {
     return gulp.src(paths.app.common.to_root)
         .pipe(gulp.dest(paths.dist.html));
 }
 
 // Таск для разработки
 exports.html = html;
-exports.cssCommon = cssCommon;
-exports.jsCommon = jsCommon;
 exports.cssVendor = cssVendor;
 exports.jsVendor = jsVendor;
+exports.cssCommon = cssCommon;
+exports.jsCommon = jsCommon;
 exports.spritesSvg = spritesSvg;
 exports.svgFiles = svgFiles;
-exports.to_root = to_root;
+exports.toRoot = toRoot;
 exports.img = img;
 exports.serve = serve;
 
 gulp.task('default', gulp.series(
-    gulp.parallel(html,cssCommon,jsCommon,cssVendor,jsVendor,fonts,spritesSvg,svgFiles,img,to_root,serve)
+    gulp.parallel(html,cssVendor,cssCommon,jsVendor,jsCommon,fonts,spritesSvg,svgFiles,img,toRoot,serve)
 ));
