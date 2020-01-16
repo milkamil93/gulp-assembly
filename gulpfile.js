@@ -32,15 +32,12 @@ const
     paths = {
         watch: {
             pug: './app/pug/**/*.pug',
-            styl: './app/styl/common.styl',
+            styl: './app/styl/**/*.styl',
             js: './app/js/**/**/*.js',
             svg: './app/materials/svg/*.svg',
             svg_files: './app/materials/svg_files/*.svg',
-            to_root: './app/materials/to_root/*.*',
-            img: [
-                './app/materials/images/**/*',
-                './app/materials/images/*'
-            ]
+            to_root: './app/materials/to_root/*',
+            img: './app/materials/images/**/*'
         },
         dist: {
             html: './' + cmsTpl,
@@ -53,7 +50,7 @@ const
         app: {
             common: {
                 html: './app/pug/pages/*.pug',
-                styl: './app/styl/common.styl',
+                styl: './app/styl/**/*.styl',
                 js: './app/js/*',
                 css: [
                     './app/materials/fonts/**/*.css'
@@ -110,7 +107,7 @@ function serve() {
 
 // Для работы Pug, преобразование Pug в HTML
 function html($file) {
-    $file = (typeof($file) === 'string') ? $file : paths.app.common.html;
+    $file = typeof $file === 'string' ? $file : paths.app.common.html;
     return gulp.src($file)
         .pipe(plumber())
         .pipe(pug({pretty: false}))
@@ -132,8 +129,8 @@ function cssCommon() {
         .pipe(plumber())
         .pipe(stylus({use:[nib(),rupture()]}))
         .pipe(postcss())
+        .pipe(concat('common.min.css'))
         .pipe(cssnano({discardUnused: {fontFace: false}}))
-        .pipe(rename({suffix:'.min'}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.dist.css))
         .pipe(browserSync.stream());
