@@ -74,8 +74,8 @@ const
                     './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js'
                 ],
                 css: [
-                    './node_modules/bootstrap/dist/css/bootstrap.min.css',
-                    './node_modules/normalize.css/normalize.css'
+                    './node_modules/normalize.css/normalize.css',
+                    './node_modules/bootstrap/dist/css/bootstrap.min.css'
                 ]
             }
         },
@@ -225,7 +225,7 @@ function img($image) {
     const $images = (typeof($image) === 'string') ? $image : paths.app.common.img;
     return gulp.src($images)
         .pipe(imagemin([
-            imagemin.jpegtran({progressive: true}),
+            imagemin.mozjpeg({quality: 75, progressive: true}),
             imagemin.optipng({optimizationLevel: 7}),
             pngquant({quality: [0.8, 0.85]})
         ]))
