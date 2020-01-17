@@ -32,7 +32,10 @@ const
     paths = {
         watch: {
             pug: './app/pug/**/*.pug',
-            styl: './app/styl/**/*.styl',
+            styl: [
+                './app/styl/**/*.styl',
+                '!./app/styl/mixins.styl'
+            ],
             js: './app/js/**/**/*.js',
             svg: './app/materials/svg/*.svg',
             svg_files: './app/materials/svg_files/*.svg',
@@ -50,7 +53,10 @@ const
         app: {
             common: {
                 html: './app/pug/pages/*.pug',
-                styl: './app/styl/**/*.styl',
+                styl: [
+                    './app/styl/**/*.styl',
+                    '!./app/styl/mixins.styl'
+                ],
                 js: './app/js/*',
                 css: [
                     './app/materials/fonts/**/*.css'
@@ -127,7 +133,11 @@ function cssCommon() {
     return gulp.src(paths.app.common.styl)
         .pipe(sourcemaps.init())
         .pipe(plumber())
-        .pipe(stylus({use:[nib(),rupture()]}))
+        .pipe(stylus({
+            compress: true,
+            use:[nib(),rupture()],
+            import: './app/styl/mixins.styl'
+        }))
         .pipe(postcss())
         .pipe(concat('common.min.css'))
         .pipe(cssnano({discardUnused: {fontFace: false}}))

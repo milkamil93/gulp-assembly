@@ -1,0 +1,30 @@
+flex-version = flex
+support-for-ie = false
+vendor-prefixes = official
+@import 'nib'
+
+rem() {
+  remified = ()
+  for arg in arguments {
+    push(remified, unit(arg/16, 'rem'))
+  }
+  return remified
+}
+
+min_size()
+  min-width arguments[0]
+  min-height arguments[1] || arguments[0]
+
+max_size()
+  max-width arguments[0]
+  max-height arguments[1] || arguments[0]
+
+placeholder()
+  &::-webkit-input-placeholder
+    {block}
+  &:-moz-placeholder
+    {block}
+  &::-moz-placeholder
+    {block}
+  &:-ms-input-placeholder
+    {block}
