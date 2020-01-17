@@ -2,6 +2,7 @@
 
 // Подключение плагинов через переменные
 const gulp = require('gulp'), // Gulp
+    path = require('path'),
     concat = require('gulp-concat'), // Объединение файлов
     imagemin = require('gulp-imagemin'), // Оптимизация изображений
     pngquant = require('imagemin-pngquant'),
@@ -17,7 +18,6 @@ const gulp = require('gulp'), // Gulp
     rupture = require('rupture'),
     postcss = require('gulp-postcss'),
     cssnano = require('gulp-cssnano'), // плагин postcss для сжатия
-    webpack = require('webpack'),
     webpackStream = require('webpack-stream');
 
 
@@ -77,11 +77,12 @@ const
                     './node_modules/jquery/dist/jquery.min.js',
                     './node_modules/swiper/js/swiper.min.js',
                     './node_modules/inputmask/dist/jquery.inputmask.min.js',
-                    './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js'
+                    './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js',
                 ],
                 css: [
+                    './app/materials/fonts/**/*.css',
                     './node_modules/normalize.css/normalize.css',
-                    './node_modules/bootstrap/dist/css/bootstrap.min.css'
+                    './node_modules/bootstrap/dist/css/bootstrap.min.css',
                 ]
             }
         },
@@ -96,12 +97,12 @@ function serve() {
     browserSync.init({
         server: paths.dist.html
     });
-    gulp.watch(paths.watch.pug).on('change', function ($file) {
-        if (~$file.indexOf('layouts')) html();
-        else html('./'+$file.replace(/\\/g,"/"));
+    gulp.watch(paths.watch.pug).on('change', function (file) {
+        if (~file.indexOf('layouts')) html();
+        else html('./'+file.replace(/\\/g,"/"));
     });
-    gulp.watch(paths.watch.img).on('all', function ($action,$file) {
-        img('./'+$file.replace(/\\/g,"/"));
+    gulp.watch(paths.watch.img).on('all', function (action, file) {
+        img('./'+file.replace(/\\/g,"/"));
     });
     gulp.watch(paths.watch.styl, gulp.series('cssCommon'));
     gulp.watch(paths.watch.js, gulp.series('jsCommon'));
@@ -112,9 +113,8 @@ function serve() {
 }
 
 // Для работы Pug, преобразование Pug в HTML
-function html($file) {
-    $file = typeof $file === 'string' ? $file : paths.app.common.html;
-    return gulp.src($file)
+function html(file) {
+    return gulp.src(typeof file === 'string' ? file : paths.app.common.html)
         .pipe(plumber())
         .pipe(pug({pretty: false}))
         .pipe(gulp.dest(paths.dist.html))
@@ -135,12 +135,11 @@ function cssCommon() {
         .pipe(plumber())
         .pipe(stylus({
             compress: true,
-            use:[nib(),rupture()],
-            import: './app/styl/mixins.styl'
+            use:[nib(), rupture()],
+            import: path.resolve('./app/styl/mixins.styl')
         }))
         .pipe(postcss())
         .pipe(concat('common.min.css'))
-        .pipe(cssnano({discardUnused: {fontFace: false}}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.dist.css))
         .pipe(browserSync.stream());
@@ -195,15 +194,15 @@ function spritesSvg() {
     return gulp.src(paths.app.common.svg)
         .pipe(cheerio({
             run: function ($, file) {
-                var $status = true,
-                    $path = file.path.split('\\'),
-                    $filename = $path[$path.length-1];
+                var status = true,
+                    path = file.path.split('\\'),
+                    filename = path[path.length-1];
                 svgIgnore.forEach(function (item) {
-                    if(!item.indexOf($filename)) {
-                        $status = false;
+                    if(!item.indexOf(filename)) {
+                        status = false;
                     }
                 });
-                if ($status) {
+                if (status) {
                     $('style').remove();
                     $('[fill]').removeAttr('fill');
                     $('[style]').removeAttr('style');
@@ -231,9 +230,9 @@ function svgFiles() {
 }
 
 // Для обработки изображений
-function img($image) {
-    const $images = (typeof($image) === 'string') ? $image : paths.app.common.img;
-    return gulp.src($images)
+function img(image) {
+    const images = (typeof(image) === 'string') ? image : paths.app.common.img;
+    return gulp.src(images)
         .pipe(imagemin([
             imagemin.mozjpeg({quality: 75, progressive: true}),
             imagemin.optipng({optimizationLevel: 7}),
