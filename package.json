@@ -38,6 +38,7 @@
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
+    "@babel/runtime": "^7.8.3",
     "@fancyapps/fancybox": "^3.5.7",
     "bootstrap": "^4.4.1",
     "inputmask": "^5.0.3",

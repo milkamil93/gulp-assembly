@@ -163,7 +163,7 @@ function jsCommon() {
                             loader: 'babel-loader',
                             options: {
                                 presets: ['@babel/preset-env'],
-                                plugins: ['@babel/transform-runtime']
+                                plugins: ['@babel/plugin-transform-runtime']
                             }
                         }
                     }
