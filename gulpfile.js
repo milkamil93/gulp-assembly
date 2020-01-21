@@ -1,96 +1,95 @@
 'use strict';
-
-// Подключение плагинов через переменные
-const gulp = require('gulp'), // Gulp
-    path = require('path'),
-    concat = require('gulp-concat'), // Объединение файлов
-    imagemin = require('gulp-imagemin'), // Оптимизация изображений
-    pngquant = require('imagemin-pngquant'),
-    plumber = require('gulp-plumber'), // Обработка ошибок
-    pug = require('gulp-pug'), // Pug
-    rename = require('gulp-rename'), // Переименование файлов
-    stylus = require('gulp-stylus'), // Stylus
-    sourcemaps = require('gulp-sourcemaps'), // Карта css
-    uglify = require('gulp-uglify'), // Минификация JS-файлов
-    svgSprite = require('gulp-svg-sprite'), // Склеивание svg в один
-    cheerio = require('gulp-cheerio'),
-    nib = require('nib'),
-    rupture = require('rupture'),
-    postcss = require('gulp-postcss'),
-    cssnano = require('gulp-cssnano'), // плагин postcss для сжатия
-    webpackStream = require('webpack-stream');
-
-
 const
 
-    // Задание путей к используемым файлам и папкам
-    cmsTpl = 'public/',
+// Подключение плагинов через переменные
+gulp = require('gulp'), // Gulp
+path = require('path'),
+concat = require('gulp-concat'), // Объединение файлов
+imagemin = require('gulp-imagemin'), // Оптимизация изображений
+pngquant = require('imagemin-pngquant'),
+plumber = require('gulp-plumber'), // Обработка ошибок
+pug = require('gulp-pug'), // Pug
+rename = require('gulp-rename'), // Переименование файлов
+stylus = require('gulp-stylus'), // Stylus
+sourcemaps = require('gulp-sourcemaps'), // Карта css
+uglify = require('gulp-uglify'), // Минификация JS-файлов
+svgSprite = require('gulp-svg-sprite'), // Склеивание svg в один
+cheerio = require('gulp-cheerio'),
+nib = require('nib'),
+rupture = require('rupture'),
+postcss = require('gulp-postcss'),
+cssnano = require('gulp-cssnano'), // плагин postcss для сжатия
+webpackStream = require('webpack-stream'),
 
-    // массив svg которые не нужно форматировать
-    svgIgnore = ['logo.svg'],
 
-    paths = {
-        watch: {
-            pug: './app/pug/**/*.pug',
+// Задание путей к используемым файлам и папкам
+cmsTpl = 'public/',
+
+// массив svg которые не нужно форматировать
+svgIgnore = ['logo.svg'],
+
+paths = {
+    watch: {
+        pug: './app/pug/**/*.pug',
+        styl: [
+            './app/styl/**/*.styl',
+            '!./app/styl/mixins.styl'
+        ],
+        js: './app/js/**/**/*.js',
+        svg: './app/materials/svg/*.svg',
+        svg_files: './app/materials/svg_files/*.svg',
+        to_root: './app/materials/to_root/*',
+        img: './app/materials/images/**/*'
+    },
+    dist: {
+        html: './' + cmsTpl,
+        css: './' + cmsTpl + 'css',
+        fonts: './' + cmsTpl + 'css/fonts',
+        js: './' + cmsTpl + 'js',
+        img: './' + cmsTpl + 'images',
+        svg: './' + cmsTpl + 'images/svg',
+    },
+    app: {
+        common: {
+            html: './app/pug/pages/*.pug',
             styl: [
                 './app/styl/**/*.styl',
                 '!./app/styl/mixins.styl'
             ],
-            js: './app/js/**/**/*.js',
+            js: './app/js/*',
+            css: [
+                './app/materials/fonts/**/*.css'
+            ],
+            fonts: [
+                './app/materials/fonts/**/*.{ttf,woff,woff2,svg,eot}'
+            ],
+            img: [
+                './app/materials/images/**/*.{jpg,jpeg,png}',
+                './app/materials/images/*.{jpg,jpeg,png}'
+            ],
             svg: './app/materials/svg/*.svg',
             svg_files: './app/materials/svg_files/*.svg',
-            to_root: './app/materials/to_root/*',
-            img: './app/materials/images/**/*'
+            to_root: './app/materials/to_root/*.*'
         },
-        dist: {
-            html: './' + cmsTpl,
-            css: './' + cmsTpl + 'css',
-            fonts: './' + cmsTpl + 'css/fonts',
-            js: './' + cmsTpl + 'js',
-            img: './' + cmsTpl + 'images',
-            svg: './' + cmsTpl + 'images/svg',
-        },
-        app: {
-            common: {
-                html: './app/pug/pages/*.pug',
-                styl: [
-                    './app/styl/**/*.styl',
-                    '!./app/styl/mixins.styl'
-                ],
-                js: './app/js/*',
-                css: [
-                    './app/materials/fonts/**/*.css'
-                ],
-                fonts: [
-                    './app/materials/fonts/**/*.{ttf,woff,woff2,svg,eot}'
-                ],
-                img: [
-                    './app/materials/images/**/*.{jpg,jpeg,png}',
-                    './app/materials/images/*.{jpg,jpeg,png}'
-                ],
-                svg: './app/materials/svg/*.svg',
-                svg_files: './app/materials/svg_files/*.svg',
-                to_root: './app/materials/to_root/*.*'
-            },
-            vendor: {
-                js: [
-                    './node_modules/jquery/dist/jquery.min.js',
-                    './node_modules/swiper/js/swiper.min.js',
-                    './node_modules/inputmask/dist/jquery.inputmask.min.js',
-                    './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js',
-                ],
-                css: [
-                    './app/materials/fonts/**/*.css',
-                    './node_modules/normalize.css/normalize.css',
-                    './node_modules/bootstrap/dist/css/bootstrap.min.css',
-                ]
-            }
-        },
-    };
+        vendor: {
+            js: [
+                './node_modules/jquery/dist/jquery.min.js',
+                './node_modules/swiper/js/swiper.min.js',
+                './node_modules/inputmask/dist/jquery.inputmask.min.js',
+                './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js',
+            ],
+            css: [
+                './app/materials/fonts/**/*.css',
+                './node_modules/normalize.css/normalize.css',
+                './node_modules/bootstrap/dist/css/bootstrap.min.css',
+            ]
+        }
+    },
+},
 
 // Подключение Browsersync
-const browserSync = require('browser-sync').create(),
-    reload = browserSync.reload;
+browserSync = require('browser-sync').create(),
+reload = browserSync.reload;
 
 // Для работы Browsersync, автообновление браузера
 function serve() {
@@ -163,7 +162,8 @@ function jsCommon() {
                         use: {
                             loader: 'babel-loader',
                             options: {
-                                presets: ['@babel/preset-env']
+                                presets: ['@babel/preset-env'],
+                                plugins: ['@babel/transform-runtime']
                             }
                         }
                     }
