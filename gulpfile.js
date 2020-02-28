@@ -101,6 +101,7 @@ function serve() {
         else html('./'+file.replace(/\\/g,"/"));
     });
     gulp.watch(paths.watch.img).on('all', function (action, file) {
+        if (action === 'unlink') return;
         img('./'+file.replace(/\\/g,"/"));
     });
     gulp.watch(paths.watch.styl, gulp.series('cssCommon'));
