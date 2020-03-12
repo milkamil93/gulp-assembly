@@ -12,8 +12,6 @@ npm install -g gulp-cli
 ### Инициализация NPM
 ```
 npm install
-npm update --save
-npm init
 ```
 В сборке по умолчанию: 
 `jquery,normalize.css,bootstrap.css,fancybox,swiper,inputmask`
