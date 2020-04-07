@@ -74,10 +74,6 @@ const
             vendor: {
                 js: [
                     './node_modules/jquery/dist/jquery.min.js',
-                    './node_modules/hc-sticky/dist/hc-sticky.js',
-                    './node_modules/parallax-js/dist/parallax.min.js',
-                    './node_modules/smoothscroll-for-websites/SmoothScroll.js',
-                    './node_modules/overlayscrollbars/js/jquery.overlayScrollbars.js',
                     './node_modules/swiper/js/swiper.min.js',
                     './node_modules/inputmask/dist/jquery.inputmask.min.js',
                     './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js',
@@ -86,7 +82,6 @@ const
                     './app/materials/fonts/**/*.css',
                     './node_modules/normalize.css/normalize.css',
                     './node_modules/bootstrap/dist/css/bootstrap.min.css',
-                    './node_modules/overlayscrollbars/css/OverlayScrollbars.min.css',
                     './node_modules/swiper/css/swiper.min.css',
                     './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.css',
                 ]
