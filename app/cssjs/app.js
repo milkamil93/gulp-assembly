@@ -1,3 +1,8 @@
+import {
+    header
+} from './components'
+header();
+
 // подгрузка скрипта относительно шаблона
 if (typeof pageName !== 'undefined') {
     try {
