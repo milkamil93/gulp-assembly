@@ -2,99 +2,109 @@
 const
 
 // Подключение плагинов через переменные
-gulp = require('gulp'), // Gulp
-path = require('path'),
-concat = require('gulp-concat'), // Объединение файлов
-imagemin = require('gulp-imagemin'), // Оптимизация изображений
-pngquant = require('imagemin-pngquant'),
-plumber = require('gulp-plumber'), // Обработка ошибок
-pug = require('gulp-pug'), // Pug
-rename = require('gulp-rename'), // Переименование файлов
-stylus = require('gulp-stylus'), // Stylus
-sourcemaps = require('gulp-sourcemaps'), // Карта css
-uglify = require('gulp-uglify'), // Минификация JS-файлов
-svgSprite = require('gulp-svg-sprite'), // Склеивание svg в один
-cheerio = require('gulp-cheerio'),
-nib = require('nib'),
-rupture = require('rupture'),
-postcss = require('gulp-postcss'),
-cssnano = require('gulp-cssnano'), // плагин postcss для сжатия
-webpackStream = require('webpack-stream'),
+    gulp = require('gulp'), // Gulp
+    path = require('path'),
+    concat = require('gulp-concat'), // Объединение файлов
+    imagemin = require('gulp-imagemin'), // Оптимизация изображений
+    pngquant = require('imagemin-pngquant'),
+    plumber = require('gulp-plumber'), // Обработка ошибок
+    pug = require('gulp-pug'), // Pug
+    rename = require('gulp-rename'), // Переименование файлов
+    stylus = require('gulp-stylus'), // Stylus
+    sourcemaps = require('gulp-sourcemaps'), // Карта css
+    uglify = require('gulp-uglify'), // Минификация JS-файлов
+    svgSprite = require('gulp-svg-sprite'), // Склеивание svg в один
+    cheerio = require('gulp-cheerio'),
+    nib = require('nib'),
+    rupture = require('rupture'),
+    postcss = require('gulp-postcss'),
+    cssnano = require('gulp-cssnano'), // плагин postcss для сжатия
+    webpackStream = require('webpack-stream'),
 
 
 // Задание путей к используемым файлам и папкам
-cmsTpl = 'public/',
+    cmsTpl = 'public/',
 
 // массив svg которые не нужно форматировать
-svgIgnore = ['logo.svg'],
+    svgIgnore = [],
 
-paths = {
-    watch: {
-        pug: './app/pug/**/*.pug',
-        styl: [
-            './app/styl/**/*.styl',
-            '!./app/styl/mixins.styl'
-        ],
-        js: './app/js/**/**/*.js',
-        svg: './app/materials/svg/*.svg',
-        svg_files: './app/materials/svg_files/*.svg',
-        to_root: './app/materials/to_root/*',
-        img: './app/materials/images/**/*'
-    },
-    dist: {
-        html: './' + cmsTpl,
-        css: './' + cmsTpl + 'css',
-        fonts: './' + cmsTpl + 'css/fonts',
-        js: './' + cmsTpl + 'js',
-        img: './' + cmsTpl + 'images',
-        svg: './' + cmsTpl + 'images/svg',
-    },
-    app: {
-        common: {
-            html: './app/pug/pages/*.pug',
+    paths = {
+        watch: {
+            pug: './app/pug/**/*.pug',
             styl: [
-                './app/styl/**/*.styl',
-                '!./app/styl/mixins.styl'
+                './app/cssjs/**/**/*.styl',
+                '!./app/cssjs/mixins.styl'
             ],
-            js: './app/js/*',
-            css: [
-                './app/materials/fonts/**/*.css'
-            ],
-            fonts: [
-                './app/materials/fonts/**/*.{ttf,woff,woff2,svg,eot}'
-            ],
-            img: [
-                './app/materials/images/**/*.{jpg,jpeg,png}',
-                './app/materials/images/*.{jpg,jpeg,png}'
-            ],
+            js: './app/cssjs/**/**/*.js',
             svg: './app/materials/svg/*.svg',
-            svg_files: './app/materials/svg_files/*.svg',
-            to_root: './app/materials/to_root/*.*'
+            svg_files: './app/materials/svg-files/*.svg',
+            to_root: './app/materials/to-root/*',
+            img: './app/materials/images/**/*'
         },
-        vendor: {
-            js: [
-                './node_modules/jquery/dist/jquery.min.js',
-                './node_modules/swiper/js/swiper.min.js',
-                './node_modules/inputmask/dist/jquery.inputmask.min.js',
-                './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js',
-            ],
-            css: [
-                './app/materials/fonts/**/*.css',
-                './node_modules/normalize.css/normalize.css',
-                './node_modules/bootstrap/dist/css/bootstrap.min.css',
-            ]
-        }
+        dist: {
+            html: './' + cmsTpl,
+            css: './' + cmsTpl + 'css',
+            fonts: './' + cmsTpl + 'css/fonts',
+            js: './' + cmsTpl + 'js',
+            img: './' + cmsTpl + 'images',
+            svg: './' + cmsTpl + 'images/svg',
+        },
+        app: {
+            common: {
+                html: './app/pug/pages/*.pug',
+                styl: [
+                    './app/cssjs/**/**/*.styl',
+                    '!./app/cssjs/mixins.styl'
+                ],
+                js: './app/cssjs/app.js',
+                css: [
+                    './app/materials/fonts/**/*.css'
+                ],
+                fonts: [
+                    './app/materials/fonts/**/*.{ttf,woff,woff2,svg,eot}'
+                ],
+                img: [
+                    './app/materials/images/**/*.{jpg,jpeg,png}',
+                    './app/materials/images/*.{jpg,jpeg,png}'
+                ],
+                svg: './app/materials/svg/*.svg',
+                svg_files: './app/materials/svg-files/*.svg',
+                to_root: './app/materials/to-root/*.*'
+            },
+            vendor: {
+                js: [
+                    './node_modules/jquery/dist/jquery.min.js',
+                    './node_modules/hc-sticky/dist/hc-sticky.js',
+                    './node_modules/parallax-js/dist/parallax.min.js',
+                    './node_modules/smoothscroll-for-websites/SmoothScroll.js',
+                    './node_modules/overlayscrollbars/js/jquery.overlayScrollbars.js',
+                    './node_modules/swiper/js/swiper.min.js',
+                    './node_modules/inputmask/dist/jquery.inputmask.min.js',
+                    './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js',
+                ],
+                css: [
+                    './app/materials/fonts/**/*.css',
+                    './node_modules/normalize.css/normalize.css',
+                    './node_modules/bootstrap/dist/css/bootstrap.min.css',
+                    './node_modules/overlayscrollbars/css/OverlayScrollbars.min.css',
+                    './node_modules/swiper/css/swiper.min.css',
+                    './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.css',
+                ]
+            }
+        },
     },
-},
 
 // Подключение Browsersync
-browserSync = require('browser-sync').create(),
-reload = browserSync.reload;
+    browserSync = require('browser-sync').create(),
+    reload = browserSync.reload;
 
 // Для работы Browsersync, автообновление браузера
 function serve() {
     browserSync.init({
-        server: paths.dist.html
+        server: {
+            baseDir: paths.dist.html,
+            index: 'main.html'
+        }
     });
     gulp.watch(paths.watch.pug).on('change', function (file) {
         if (~file.indexOf('layouts')) html();
@@ -136,7 +146,7 @@ function cssCommon() {
         .pipe(stylus({
             compress: true,
             use:[nib(), rupture()],
-            import: path.resolve('./app/styl/mixins.styl')
+            import: path.resolve('./app/cssjs/mixins.styl')
         }))
         .pipe(postcss())
         .pipe(concat('common.min.css'))
@@ -181,10 +191,8 @@ function jsCommon() {
 // Для объединения и минификации CSS-файлов внешних библиотек
 function cssVendor() {
     return gulp.src(paths.app.vendor.css)
-        .pipe(sourcemaps.init())
         .pipe(concat('vendor.min.css'))
         .pipe(cssnano({discardUnused: {fontFace: false}}))
-        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.dist.css));
 }
 
@@ -241,7 +249,7 @@ function img(image) {
     const images = (typeof(image) === 'string') ? image : paths.app.common.img;
     return gulp.src(images)
         .pipe(imagemin([
-            imagemin.mozjpeg({quality: 75, progressive: true}),
+            imagemin.mozjpeg({quality: 85, progressive: true}),
             imagemin.optipng({optimizationLevel: 7}),
             pngquant({quality: [0.8, 0.85]})
         ]))
