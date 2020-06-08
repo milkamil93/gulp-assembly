@@ -241,7 +241,7 @@ function img(image) {
     const images = (typeof(image) === 'string') ? image : paths.app.common.img;
     return gulp.src(images)
         .pipe(imagemin([
-            imagemin.mozjpeg({quality: 75, progressive: true}),
+            imagemin.mozjpeg({quality: 85, progressive: true}),
             imagemin.optipng({optimizationLevel: 7}),
             pngquant({quality: [0.8, 0.85]})
         ]))
