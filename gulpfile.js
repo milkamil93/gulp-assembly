@@ -154,6 +154,7 @@ function htmlEmail(file) {
         .pipe(plumber())
         .pipe(pug({pretty: true}))
         .pipe(inlineCss({
+            removeHtmlSelectors: true,
             url: 'file://' + path.resolve('./public') + '/',
         }))
         .pipe(gulp.dest(paths.dist.html))
