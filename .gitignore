@@ -1,5 +1,8 @@
 .git
 .idea
 *.iml
+public
 node_modules
 package-lock.json
+app/materials/images/*.jpg
+app/materials/images/*.png

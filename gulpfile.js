@@ -20,6 +20,7 @@ const
     postcss = require('gulp-postcss'),
     cssnano = require('gulp-cssnano'), // плагин postcss для сжатия
     webpackStream = require('webpack-stream'),
+    inlineCss = require('gulp-inline-css'),
 
 
 // Задание путей к используемым файлам и папкам
@@ -117,11 +118,44 @@ function serve() {
     gulp.watch(paths.dist.html+'/*.html').on('change', reload);
 }
 
+// Для работы Browsersync, автообновление браузера
+function serveMail() {
+    browserSync.init({
+        watch: false,
+        server: {
+            baseDir: paths.dist.html,
+            index: 'main.html'
+        }
+    });
+    gulp.watch(paths.watch.pug).on('change', function (file) {
+        if (~file.indexOf('layouts')) htmlEmail();
+        else htmlEmail('./'+file.replace(/\\/g,"/"));
+    });
+    gulp.watch(paths.watch.img).on('all', function (action, file) {
+        if (action === 'unlink') return;
+        img('./'+file.replace(/\\/g,"/"));
+    });
+    gulp.watch(paths.watch.styl).on('change', gulp.series(cssCommon, htmlEmail));
+    gulp.watch(paths.dist.html+'/*.html').on('change', reload);
+}
+
 // Для работы Pug, преобразование Pug в HTML
 function html(file) {
     return gulp.src(typeof file === 'string' ? file : paths.app.common.html)
         .pipe(plumber())
         .pipe(pug({pretty: false}))
+        .pipe(gulp.dest(paths.dist.html))
+        .pipe(browserSync.stream());
+}
+
+// Для работы Pug, преобразование Pug в HTML и подтягивания стилей в атрибуты
+function htmlEmail(file) {
+    return gulp.src(typeof file === 'string' ? file : paths.app.common.html)
+        .pipe(plumber())
+        .pipe(pug({pretty: true}))
+        .pipe(inlineCss({
+            url: 'file://' + path.resolve('./public') + '/',
+        }))
         .pipe(gulp.dest(paths.dist.html))
         .pipe(browserSync.stream());
 }
@@ -258,17 +292,24 @@ function toRoot() {
 }
 
 // Таск для разработки
+exports.cssCommon = cssCommon;
 exports.html = html;
+exports.htmlEmail = htmlEmail;
 exports.cssVendor = cssVendor;
 exports.jsVendor = jsVendor;
-exports.cssCommon = cssCommon;
 exports.jsCommon = jsCommon;
 exports.spritesSvg = spritesSvg;
 exports.svgFiles = svgFiles;
 exports.toRoot = toRoot;
 exports.img = img;
 exports.serve = serve;
+exports.serveMail = serveMail;
 
 gulp.task('default', gulp.series(
     gulp.parallel(html,cssVendor,cssCommon,jsVendor,jsCommon,fonts,spritesSvg,svgFiles,img,toRoot,serve)
+));
+
+gulp.task('email', gulp.series(
+    cssCommon,
+    gulp.parallel(img,htmlEmail,serveMail)
 ));

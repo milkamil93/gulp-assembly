@@ -15,3 +15,5 @@ npm install
 ```
 В сборке по умолчанию: 
 `jquery,normalize.css,bootstrap.css,fancybox,swiper,inputmask`
+
+Хороший гайд по вёрстке писем https://emailsoldiers.ru/blog/html-guideline
