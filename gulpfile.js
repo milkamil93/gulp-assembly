@@ -75,7 +75,7 @@ const
             vendor: {
                 js: [
                     './node_modules/jquery/dist/jquery.min.js',
-                    './node_modules/swiper/js/swiper.min.js',
+                    './node_modules/swiper/swiper-bundle.min.js',
                     './node_modules/inputmask/dist/jquery.inputmask.min.js',
                     './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js',
                 ],
@@ -83,7 +83,7 @@ const
                     './app/materials/fonts/**/*.css',
                     './node_modules/normalize.css/normalize.css',
                     './node_modules/bootstrap/dist/css/bootstrap.min.css',
-                    './node_modules/swiper/css/swiper.min.css',
+                    './node_modules/swiper/swiper-bundle.min.css',
                     './node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.css',
                 ]
             }
