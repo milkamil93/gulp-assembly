@@ -19,7 +19,7 @@
     "gulp-cheerio": "*",
     "gulp-concat": "*",
     "gulp-cssnano": "*",
-    "gulp-imagemin": "^4.1.0",
+    "gulp-imagemin": "^7.1.0",
     "gulp-inline-css": "^4.0.0",
     "gulp-plumber": "*",
     "gulp-postcss": "*",
